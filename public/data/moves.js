@@ -43,6 +43,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Clever",
 	},
 	"acid": {
 		num: 51,
@@ -64,6 +65,7 @@ exports.BattleMovedex = {
 		},
 		target: "allAdjacentFoes",
 		type: "Poison",
+		contestType: "Clever",
 	},
 	"acidarmor": {
 		num: 151,
@@ -83,6 +85,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Poison",
+		contestType: "Tough",
 	},
 	"acidspray": {
 		num: 491,
@@ -105,17 +108,18 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Poison",
+		contestType: "Beautiful",
 	},
 	"acrobatics": {
 		num: 512,
 		accuracy: 100,
 		basePower: 55,
-		basePowerCallback: function (pokemon) {
+		basePowerCallback: function (pokemon, target, move) {
 			if (!pokemon.item) {
 				this.debug("Power doubled for no item");
-				return 110;
+				return move.basePower * 2;
 			}
-			return 55;
+			return move.basePower;
 		},
 		category: "Physical",
 		desc: "Power doubles if the user has no held item.",
@@ -129,6 +133,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "any",
 		type: "Flying",
+		contestType: "Cool",
 	},
 	"acupressure": {
 		num: 367,
@@ -143,15 +148,15 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {},
 		onHit: function (target) {
-			let stats = [];
-			for (let stat in target.boosts) {
+			var stats = [];
+			for (var stat in target.boosts) {
 				if (target.boosts[stat] < 6) {
 					stats.push(stat);
 				}
 			}
 			if (stats.length) {
-				let randomStat = stats[this.random(stats.length)];
-				let boost = {};
+				var randomStat = stats[this.random(stats.length)];
+				var boost = {};
 				boost[randomStat] = 2;
 				this.boost(boost);
 			} else {
@@ -161,6 +166,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "adjacentAllyOrSelf",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"aerialace": {
 		num: 332,
@@ -178,6 +184,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "any",
 		type: "Flying",
+		contestType: "Cool",
 	},
 	"aeroblast": {
 		num: 177,
@@ -196,6 +203,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "any",
 		type: "Flying",
+		contestType: "Cool",
 	},
 	"afteryou": {
 		num: 495,
@@ -211,7 +219,7 @@ exports.BattleMovedex = {
 		flags: {authentic: 1},
 		onHit: function (target) {
 			if (target.side.active.length < 2) return false; // fails in singles
-			let decision = this.willMove(target);
+			var decision = this.willMove(target);
 			if (decision) {
 				this.cancelMove(target);
 				this.queue.unshift(decision);
@@ -223,6 +231,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"agility": {
 		num: 97,
@@ -243,6 +252,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Psychic",
+		contestType: "Cool",
 	},
 	"aircutter": {
 		num: 314,
@@ -260,6 +270,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Flying",
+		contestType: "Cool",
 	},
 	"airslash": {
 		num: 403,
@@ -280,6 +291,7 @@ exports.BattleMovedex = {
 		},
 		target: "any",
 		type: "Flying",
+		contestType: "Cool",
 	},
 	"allyswitch": {
 		num: 502,
@@ -298,7 +310,7 @@ exports.BattleMovedex = {
 			if (source.side.active.length === 3 && source.position === 1) return false;
 		},
 		onHit: function (pokemon) {
-			let newPosition = (pokemon.position === 0 ? pokemon.side.active.length - 1 : 0);
+			var newPosition = (pokemon.position === 0 ? pokemon.side.active.length - 1 : 0);
 			if (!pokemon.side.active[newPosition]) return false;
 			if (pokemon.side.active[newPosition].fainted) return false;
 			this.swapPosition(pokemon, newPosition, '[from] move: Ally Switch');
@@ -306,6 +318,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"amnesia": {
 		num: 133,
@@ -325,6 +338,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Psychic",
+		contestType: "Cute",
 	},
 	"ancientpower": {
 		num: 246,
@@ -353,6 +367,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Rock",
+		contestType: "Tough",
 	},
 	"aquajet": {
 		num: 453,
@@ -370,6 +385,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Water",
+		contestType: "Cool",
 	},
 	"aquaring": {
 		num: 392,
@@ -396,6 +412,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Water",
+		contestType: "Beautiful",
 	},
 	"aquatail": {
 		num: 401,
@@ -413,6 +430,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Water",
+		contestType: "Beautiful",
 	},
 	"armthrust": {
 		num: 292,
@@ -430,6 +448,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Tough",
 	},
 	"aromatherapy": {
 		num: 312,
@@ -445,8 +464,8 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {snatch: 1, distance: 1},
 		onHit: function (pokemon, source, move) {
-			let side = pokemon.side;
-			for (let i = 0; i < side.pokemon.length; i++) {
+			var side = pokemon.side;
+			for (var i = 0; i < side.pokemon.length; i++) {
 				if (side.pokemon[i] !== source && ((side.pokemon[i].hasAbility('sapsipper')) ||
 						(side.pokemon[i].volatiles['substitute'] && !move.infiltrates))) {
 					continue;
@@ -457,6 +476,7 @@ exports.BattleMovedex = {
 		},
 		target: "allyTeam",
 		type: "Grass",
+		contestType: "Clever",
 	},
 	"aromaticmist": {
 		num: 597,
@@ -476,6 +496,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "adjacentAlly",
 		type: "Fairy",
+		contestType: "Beautiful",
 	},
 	"assist": {
 		num: 274,
@@ -490,13 +511,13 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {},
 		onHit: function (target) {
-			let moves = [];
-			for (let j = 0; j < target.side.pokemon.length; j++) {
-				let pokemon = target.side.pokemon[j];
+			var moves = [];
+			for (var j = 0; j < target.side.pokemon.length; j++) {
+				var pokemon = target.side.pokemon[j];
 				if (pokemon === target) continue;
-				for (let i = 0; i < pokemon.moveset.length; i++) {
-					let move = pokemon.moveset[i].id;
-					let noAssist = {
+				for (var i = 0; i < pokemon.moveset.length; i++) {
+					var move = pokemon.moveset[i].id;
+					var noAssist = {
 						assist:1, belch:1, bestow:1, bounce:1, chatter:1, circlethrow:1, copycat:1, counter:1, covet:1, destinybond:1, detect:1, dig:1, dive:1, dragontail:1, endure:1, feint:1, fly:1, focuspunch:1, followme:1, helpinghand:1, kingsshield:1, matblock:1, mefirst:1, metronome:1, mimic:1, mirrorcoat:1, mirrormove:1, naturepower:1, phantomforce:1, protect:1, ragepowder:1, roar:1, shadowforce:1, sketch:1, skydrop:1, sleeptalk:1, snatch:1, spikyshield:1, struggle:1, switcheroo:1, thief:1, transform:1, trick:1, whirlwind:1,
 					};
 					if (!noAssist[move]) {
@@ -504,7 +525,7 @@ exports.BattleMovedex = {
 					}
 				}
 			}
-			let randomMove = '';
+			var randomMove = '';
 			if (moves.length) randomMove = moves[this.random(moves.length)];
 			if (!randomMove) {
 				return false;
@@ -514,17 +535,18 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"assurance": {
 		num: 372,
 		accuracy: 100,
 		basePower: 60,
-		basePowerCallback: function (pokemon, target) {
+		basePowerCallback: function (pokemon, target, move) {
 			if (pokemon.volatiles.assurance && pokemon.volatiles.assurance.hurt) {
 				this.debug('Boosted for being damaged this turn');
-				return 120;
+				return move.basePower * 2;
 			}
-			return 60;
+			return move.basePower;
 		},
 		category: "Physical",
 		desc: "Power doubles if the target has already taken damage this turn, other than direct damage from Belly Drum, confusion, Curse, or Pain Split.",
@@ -555,6 +577,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Clever",
 	},
 	"astonish": {
 		num: 310,
@@ -574,6 +597,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Ghost",
+		contestType: "Cute",
 	},
 	"attackorder": {
 		num: 454,
@@ -592,6 +616,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Bug",
+		contestType: "Clever",
 	},
 	"attract": {
 		num: 213,
@@ -647,6 +672,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"aurasphere": {
 		num: 396,
@@ -664,6 +690,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "any",
 		type: "Fighting",
+		contestType: "Beautiful",
 	},
 	"aurorabeam": {
 		num: 62,
@@ -685,6 +712,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Ice",
+		contestType: "Beautiful",
 	},
 	"autotomize": {
 		num: 475,
@@ -700,7 +728,7 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {snatch: 1},
 		onTryHit: function (pokemon) {
-			let hasContrary = pokemon.hasAbility('contrary');
+			var hasContrary = pokemon.hasAbility('contrary');
 			if ((!hasContrary && pokemon.boosts.spe === 6) || (hasContrary && pokemon.boosts.spe === -6)) {
 				return false;
 			}
@@ -735,17 +763,18 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Steel",
+		contestType: "Beautiful",
 	},
 	"avalanche": {
 		num: 419,
 		accuracy: 100,
 		basePower: 60,
-		basePowerCallback: function (pokemon, target) {
+		basePowerCallback: function (pokemon, target, move) {
 			if (target.lastDamage > 0 && pokemon.lastAttackedBy && pokemon.lastAttackedBy.thisTurn && pokemon.lastAttackedBy.pokemon === target) {
 				this.debug('Boosted for getting hit by ' + pokemon.lastAttackedBy.move);
-				return 120;
+				return move.basePower * 2;
 			}
-			return 60;
+			return move.basePower;
 		},
 		category: "Physical",
 		desc: "Power doubles if the user was hit by the target this turn.",
@@ -759,6 +788,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ice",
+		contestType: "Beautiful",
 	},
 	"babydolleyes": {
 		num: 608,
@@ -778,6 +808,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fairy",
+		contestType: "Cute",
 	},
 	"barrage": {
 		num: 140,
@@ -795,6 +826,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"barrier": {
 		num: 112,
@@ -814,6 +846,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Psychic",
+		contestType: "Cool",
 	},
 	"batonpass": {
 		num: 226,
@@ -832,6 +865,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"beatup": {
 		num: 251,
@@ -875,6 +909,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Clever",
 	},
 	"belch": {
 		num: 562,
@@ -892,6 +927,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Poison",
+		contestType: "Tough",
 	},
 	"bellydrum": {
 		num: 187,
@@ -915,6 +951,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"bestow": {
 		num: 516,
@@ -932,7 +969,7 @@ exports.BattleMovedex = {
 			if (target.item) {
 				return false;
 			}
-			let yourItem = source.takeItem();
+			var yourItem = source.takeItem();
 			if (!yourItem || (yourItem.onTakeItem && yourItem.onTakeItem(yourItem, target) === false)) {
 				return false;
 			}
@@ -945,6 +982,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"bide": {
 		num: 117,
@@ -987,7 +1025,7 @@ exports.BattleMovedex = {
 						this.add('-fail', pokemon);
 						return false;
 					}
-					let target = this.effectData.sourceSide.active[this.effectData.sourcePosition];
+					var target = this.effectData.sourceSide.active[this.effectData.sourcePosition];
 					if (!target) {
 						this.add('-fail', pokemon);
 						return false;
@@ -1006,6 +1044,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"bind": {
 		num: 20,
@@ -1023,6 +1062,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"bite": {
 		num: 44,
@@ -1042,6 +1082,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Dark",
+		contestType: "Tough",
 	},
 	"blastburn": {
 		num: 307,
@@ -1061,6 +1102,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fire",
+		contestType: "Beautiful",
 	},
 	"blazekick": {
 		num: 299,
@@ -1082,6 +1124,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Fire",
+		contestType: "Cool",
 	},
 	"blizzard": {
 		num: 59,
@@ -1105,6 +1148,7 @@ exports.BattleMovedex = {
 		},
 		target: "allAdjacentFoes",
 		type: "Ice",
+		contestType: "Beautiful",
 	},
 	"block": {
 		num: 335,
@@ -1126,6 +1170,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"blueflare": {
 		num: 551,
@@ -1146,6 +1191,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Fire",
+		contestType: "Beautiful",
 	},
 	"bodyslam": {
 		num: 34,
@@ -1166,6 +1212,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"boltstrike": {
 		num: 550,
@@ -1186,6 +1233,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Electric",
+		contestType: "Beautiful",
 	},
 	"boneclub": {
 		num: 125,
@@ -1205,6 +1253,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Ground",
+		contestType: "Tough",
 	},
 	"bonerush": {
 		num: 198,
@@ -1222,6 +1271,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ground",
+		contestType: "Tough",
 	},
 	"bonemerang": {
 		num: 155,
@@ -1240,6 +1290,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ground",
+		contestType: "Tough",
 	},
 	"boomburst": {
 		num: 586,
@@ -1257,6 +1308,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacent",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"bounce": {
 		num: 340,
@@ -1309,6 +1361,7 @@ exports.BattleMovedex = {
 		},
 		target: "any",
 		type: "Flying",
+		contestType: "Cute",
 	},
 	"bravebird": {
 		num: 413,
@@ -1327,6 +1380,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "any",
 		type: "Flying",
+		contestType: "Cool",
 	},
 	"brickbreak": {
 		num: 280,
@@ -1351,6 +1405,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Cool",
 	},
 	"brine": {
 		num: 362,
@@ -1373,6 +1428,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Water",
+		contestType: "Tough",
 	},
 	"bubble": {
 		num: 145,
@@ -1394,6 +1450,7 @@ exports.BattleMovedex = {
 		},
 		target: "allAdjacentFoes",
 		type: "Water",
+		contestType: "Cute",
 	},
 	"bubblebeam": {
 		num: 61,
@@ -1415,6 +1472,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Water",
+		contestType: "Beautiful",
 	},
 	"bugbite": {
 		num: 450,
@@ -1429,16 +1487,18 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {contact: 1, protect: 1, mirror: 1},
 		onHit: function (target, source) {
-			let item = target.getItem();
+			var item = target.getItem();
 			if (source.hp && item.isBerry && target.takeItem(source)) {
 				this.add('-enditem', target, item.name, '[from] stealeat', '[move] Bug Bite', '[of] ' + source);
 				this.singleEvent('Eat', item, null, source, null, null);
+				this.runEvent('EatItem', source, null, null, item);
 				source.ateBerry = true;
 			}
 		},
 		secondary: false,
 		target: "normal",
 		type: "Bug",
+		contestType: "Cute",
 	},
 	"bugbuzz": {
 		num: 405,
@@ -1461,6 +1521,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Bug",
+		contestType: "Beautiful",
 	},
 	"bulkup": {
 		num: 339,
@@ -1482,6 +1543,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Fighting",
+		contestType: "Cool",
 	},
 	"bulldoze": {
 		num: 523,
@@ -1503,6 +1565,7 @@ exports.BattleMovedex = {
 		},
 		target: "allAdjacent",
 		type: "Ground",
+		contestType: "Tough",
 	},
 	"bulletpunch": {
 		num: 418,
@@ -1520,6 +1583,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Steel",
+		contestType: "Tough",
 	},
 	"bulletseed": {
 		num: 331,
@@ -1538,6 +1602,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Cool",
 	},
 	"calmmind": {
 		num: 347,
@@ -1559,6 +1624,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"camouflage": {
 		num: 293,
@@ -1573,7 +1639,7 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {snatch: 1},
 		onHit: function (target) {
-			let newType = 'Normal';
+			var newType = 'Normal';
 			if (this.isTerrain('electricterrain')) {
 				newType = 'Electric';
 			} else if (this.isTerrain('grassyterrain')) {
@@ -1588,6 +1654,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"captivate": {
 		num: 445,
@@ -1613,6 +1680,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"celebrate": {
 		num: 606,
@@ -1633,6 +1701,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"charge": {
 		num: 268,
@@ -1669,6 +1738,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Electric",
+		contestType: "Clever",
 	},
 	"chargebeam": {
 		num: 451,
@@ -1692,6 +1762,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Electric",
+		contestType: "Beautiful",
 	},
 	"charm": {
 		num: 204,
@@ -1711,6 +1782,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fairy",
+		contestType: "Cute",
 	},
 	"chatter": {
 		num: 448,
@@ -1732,6 +1804,7 @@ exports.BattleMovedex = {
 		},
 		target: "any",
 		type: "Flying",
+		contestType: "Cute",
 	},
 	"chipaway": {
 		num: 498,
@@ -1750,6 +1823,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"circlethrow": {
 		num: 509,
@@ -1767,6 +1841,7 @@ exports.BattleMovedex = {
 		forceSwitch: true,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Cool",
 	},
 	"clamp": {
 		num: 128,
@@ -1784,6 +1859,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Water",
+		contestType: "Tough",
 	},
 	"clearsmog": {
 		num: 499,
@@ -1805,6 +1881,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Poison",
+		contestType: "Beautiful",
 	},
 	"closecombat": {
 		num: 370,
@@ -1828,6 +1905,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Tough",
 	},
 	"coil": {
 		num: 489,
@@ -1850,6 +1928,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Poison",
+		contestType: "Tough",
 	},
 	"cometpunch": {
 		num: 4,
@@ -1867,6 +1946,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"confide": {
 		num: 590,
@@ -1886,6 +1966,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"confuseray": {
 		num: 109,
@@ -1903,6 +1984,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ghost",
+		contestType: "Clever",
 	},
 	"confusion": {
 		num: 93,
@@ -1922,6 +2004,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"constrict": {
 		num: 132,
@@ -1943,6 +2026,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"conversion": {
 		num: 160,
@@ -1957,13 +2041,14 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {snatch: 1},
 		onHit: function (target) {
-			let type = this.getMove(target.moveset[0].id).type;
+			var type = this.getMove(target.moveset[0].id).type;
 			if (target.hasType(type) || !target.setType(type)) return false;
 			this.add('-start', target, 'typechange', type);
 		},
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Beautiful",
 	},
 	"conversion2": {
 		num: 176,
@@ -1981,11 +2066,11 @@ exports.BattleMovedex = {
 			if (!target.lastMove) {
 				return false;
 			}
-			let possibleTypes = [];
-			let attackType = this.getMove(target.lastMove).type;
-			for (let type in this.data.TypeChart) {
+			var possibleTypes = [];
+			var attackType = this.getMove(target.lastMove).type;
+			for (var type in this.data.TypeChart) {
 				if (source.hasType(type) || target.hasType(type)) continue;
-				let typeCheck = this.data.TypeChart[type].damageTaken[attackType];
+				var typeCheck = this.data.TypeChart[type].damageTaken[attackType];
 				if (typeCheck === 2 || typeCheck === 3) {
 					possibleTypes.push(type);
 				}
@@ -1993,7 +2078,7 @@ exports.BattleMovedex = {
 			if (!possibleTypes.length) {
 				return false;
 			}
-			let randomType = possibleTypes[this.random(possibleTypes.length)];
+			var randomType = possibleTypes[this.random(possibleTypes.length)];
 
 			if (!source.setType(randomType)) return false;
 			this.add('-start', source, 'typechange', randomType);
@@ -2001,6 +2086,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Beautiful",
 	},
 	"copycat": {
 		num: 383,
@@ -2015,7 +2101,7 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {},
 		onHit: function (pokemon) {
-			let noCopycat = {assist:1, bestow:1, chatter:1, circlethrow:1, copycat:1, counter:1, covet:1, destinybond:1, detect:1, dragontail:1, endure:1, feint:1, focuspunch:1, followme:1, helpinghand:1, mefirst:1, metronome:1, mimic:1, mirrorcoat:1, mirrormove:1, naturepower:1, protect:1, ragepowder:1, roar:1, sketch:1, sleeptalk:1, snatch:1, struggle:1, switcheroo:1, thief:1, transform:1, trick:1, whirlwind:1};
+			var noCopycat = {assist:1, bestow:1, chatter:1, circlethrow:1, copycat:1, counter:1, covet:1, destinybond:1, detect:1, dragontail:1, endure:1, feint:1, focuspunch:1, followme:1, helpinghand:1, mefirst:1, metronome:1, mimic:1, mirrorcoat:1, mirrormove:1, naturepower:1, protect:1, ragepowder:1, roar:1, sketch:1, sleeptalk:1, snatch:1, struggle:1, switcheroo:1, thief:1, transform:1, trick:1, whirlwind:1};
 			if (!this.lastMove || noCopycat[this.lastMove]) {
 				return false;
 			}
@@ -2024,6 +2110,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"cosmicpower": {
 		num: 322,
@@ -2044,6 +2131,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Psychic",
+		contestType: "Beautiful",
 	},
 	"cottonguard": {
 		num: 538,
@@ -2064,6 +2152,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Grass",
+		contestType: "Cute",
 	},
 	"cottonspore": {
 		num: 178,
@@ -2081,7 +2170,7 @@ exports.BattleMovedex = {
 			spe: -2,
 		},
 		onTryHit: function (target) {
-			if (!target.runImmunity('powder')) {
+			if (!target.runStatusImmunity('powder')) {
 				this.add('-immune', target, '[msg]');
 				return null;
 			}
@@ -2089,6 +2178,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Grass",
+		contestType: "Beautiful",
 	},
 	"counter": {
 		num: 68,
@@ -2136,6 +2226,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "scripted",
 		type: "Fighting",
+		contestType: "Tough",
 	},
 	"covet": {
 		num: 343,
@@ -2150,10 +2241,10 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {contact: 1, protect: 1, mirror: 1},
 		onHit: function (target, source) {
-			if (source.item) {
+			if (source.item || source.volatiles['gem']) {
 				return;
 			}
-			let yourItem = target.takeItem(source);
+			var yourItem = target.takeItem(source);
 			if (!yourItem) {
 				return;
 			}
@@ -2166,6 +2257,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"crabhammer": {
 		num: 152,
@@ -2184,6 +2276,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Water",
+		contestType: "Tough",
 	},
 	"craftyshield": {
 		num: 578,
@@ -2216,6 +2309,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allySide",
 		type: "Fairy",
+		contestType: "Clever",
 	},
 	"crosschop": {
 		num: 238,
@@ -2234,6 +2328,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Cool",
 	},
 	"crosspoison": {
 		num: 440,
@@ -2254,6 +2349,7 @@ exports.BattleMovedex = {
 		critRatio: 2,
 		target: "normal",
 		type: "Poison",
+		contestType: "Cool",
 	},
 	"crunch": {
 		num: 242,
@@ -2276,6 +2372,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Dark",
+		contestType: "Tough",
 	},
 	"crushclaw": {
 		num: 306,
@@ -2297,6 +2394,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"crushgrip": {
 		num: 462,
@@ -2316,6 +2414,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"curse": {
 		num: 174,
@@ -2360,6 +2459,7 @@ exports.BattleMovedex = {
 		target: "normal",
 		nonGhostTarget: "self",
 		type: "Ghost",
+		contestType: "Tough",
 	},
 	"cut": {
 		num: 15,
@@ -2376,6 +2476,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"darkpulse": {
 		num: 399,
@@ -2396,6 +2497,7 @@ exports.BattleMovedex = {
 		},
 		target: "any",
 		type: "Dark",
+		contestType: "Cool",
 	},
 	"darkvoid": {
 		num: 464,
@@ -2414,6 +2516,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Dark",
+		contestType: "Clever",
 	},
 	"dazzlinggleam": {
 		num: 605,
@@ -2431,6 +2534,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Fairy",
+		contestType: "Beautiful",
 	},
 	"defendorder": {
 		num: 455,
@@ -2452,6 +2556,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Bug",
+		contestType: "Clever",
 	},
 	"defensecurl": {
 		num: 111,
@@ -2472,6 +2577,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"defog": {
 		num: 432,
@@ -2488,15 +2594,15 @@ exports.BattleMovedex = {
 		flags: {protect: 1, reflectable: 1, mirror: 1, authentic: 1},
 		onHit: function (target, source, move) {
 			if (!target.volatiles['substitute'] || move.infiltrates) this.boost({evasion:-1});
-			let removeTarget = {reflect:1, lightscreen:1, safeguard:1, mist:1, spikes:1, toxicspikes:1, stealthrock:1, stickyweb:1};
-			let removeAll = {spikes:1, toxicspikes:1, stealthrock:1, stickyweb:1};
-			for (let targetCondition in removeTarget) {
+			var removeTarget = {reflect:1, lightscreen:1, safeguard:1, mist:1, spikes:1, toxicspikes:1, stealthrock:1, stickyweb:1};
+			var removeAll = {spikes:1, toxicspikes:1, stealthrock:1, stickyweb:1};
+			for (var targetCondition in removeTarget) {
 				if (target.side.removeSideCondition(targetCondition)) {
 					if (!removeAll[targetCondition]) continue;
 					this.add('-sideend', target.side, this.getEffect(targetCondition).name, '[from] move: Defog', '[of] ' + target);
 				}
 			}
-			for (let sideCondition in removeAll) {
+			for (var sideCondition in removeAll) {
 				if (source.side.removeSideCondition(sideCondition)) {
 					this.add('-sideend', source.side, this.getEffect(sideCondition).name, '[from] move: Defog', '[of] ' + source);
 				}
@@ -2505,6 +2611,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Flying",
+		contestType: "Cool",
 	},
 	"destinybond": {
 		num: 194,
@@ -2540,6 +2647,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Ghost",
+		contestType: "Clever",
 	},
 	"detect": {
 		num: 197,
@@ -2565,6 +2673,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Fighting",
+		contestType: "Cool",
 	},
 	"diamondstorm": {
 		num: 591,
@@ -2589,6 +2698,7 @@ exports.BattleMovedex = {
 		},
 		target: "allAdjacentFoes",
 		type: "Rock",
+		contestType: "Beautiful",
 	},
 	"dig": {
 		num: 91,
@@ -2638,6 +2748,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ground",
+		contestType: "Tough",
 	},
 	"disable": {
 		num: 50,
@@ -2664,8 +2775,8 @@ exports.BattleMovedex = {
 					this.debug('pokemon hasn\'t moved yet');
 					return false;
 				}
-				let moves = pokemon.moveset;
-				for (let i = 0; i < moves.length; i++) {
+				var moves = pokemon.moveset;
+				for (var i = 0; i < moves.length; i++) {
 					if (moves[i].id === pokemon.lastMove) {
 						if (!moves[i].pp) {
 							this.debug('Move out of PP');
@@ -2692,8 +2803,8 @@ exports.BattleMovedex = {
 				}
 			},
 			onDisableMove: function (pokemon) {
-				let moves = pokemon.moveset;
-				for (let i = 0; i < moves.length; i++) {
+				var moves = pokemon.moveset;
+				for (var i = 0; i < moves.length; i++) {
 					if (moves[i].id === this.effectData.move) {
 						pokemon.disableMove(moves[i].id);
 					}
@@ -2703,6 +2814,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"disarmingvoice": {
 		num: 574,
@@ -2719,6 +2831,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Fairy",
+		contestType: "Cute",
 	},
 	"discharge": {
 		num: 435,
@@ -2739,6 +2852,7 @@ exports.BattleMovedex = {
 		},
 		target: "allAdjacent",
 		type: "Electric",
+		contestType: "Beautiful",
 	},
 	"dive": {
 		num: 291,
@@ -2788,6 +2902,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Water",
+		contestType: "Beautiful",
 	},
 	"dizzypunch": {
 		num: 146,
@@ -2807,6 +2922,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"doomdesire": {
 		num: 353,
@@ -2848,6 +2964,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Steel",
+		contestType: "Beautiful",
 	},
 	"doubleedge": {
 		num: 38,
@@ -2866,6 +2983,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"doublehit": {
 		num: 458,
@@ -2883,6 +3001,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"doublekick": {
 		num: 24,
@@ -2900,6 +3019,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Cool",
 	},
 	"doubleslap": {
 		num: 3,
@@ -2917,6 +3037,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"doubleteam": {
 		num: 104,
@@ -2936,6 +3057,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"dracometeor": {
 		num: 434,
@@ -2958,6 +3080,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dragon",
+		contestType: "Beautiful",
 	},
 	"dragonascent": {
 		num: 620,
@@ -2980,6 +3103,7 @@ exports.BattleMovedex = {
 		},
 		target: "any",
 		type: "Flying",
+		contestType: "Beautiful",
 	},
 	"dragonbreath": {
 		num: 225,
@@ -2999,6 +3123,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Dragon",
+		contestType: "Cool",
 	},
 	"dragonclaw": {
 		num: 337,
@@ -3016,6 +3141,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dragon",
+		contestType: "Cool",
 	},
 	"dragondance": {
 		num: 349,
@@ -3037,6 +3163,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Dragon",
+		contestType: "Cool",
 	},
 	"dragonpulse": {
 		num: 406,
@@ -3054,6 +3181,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "any",
 		type: "Dragon",
+		contestType: "Beautiful",
 	},
 	"dragonrage": {
 		num: 82,
@@ -3071,6 +3199,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dragon",
+		contestType: "Cool",
 	},
 	"dragonrush": {
 		num: 407,
@@ -3090,6 +3219,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Dragon",
+		contestType: "Tough",
 	},
 	"dragontail": {
 		num: 525,
@@ -3107,6 +3237,7 @@ exports.BattleMovedex = {
 		forceSwitch: true,
 		target: "normal",
 		type: "Dragon",
+		contestType: "Tough",
 	},
 	"drainingkiss": {
 		num: 577,
@@ -3124,6 +3255,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fairy",
+		contestType: "Cute",
 	},
 	"drainpunch": {
 		num: 409,
@@ -3142,6 +3274,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Tough",
 	},
 	"dreameater": {
 		num: 138,
@@ -3165,6 +3298,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"drillpeck": {
 		num: 65,
@@ -3182,6 +3316,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "any",
 		type: "Flying",
+		contestType: "Cool",
 	},
 	"drillrun": {
 		num: 529,
@@ -3200,6 +3335,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ground",
+		contestType: "Tough",
 	},
 	"dualchop": {
 		num: 530,
@@ -3217,6 +3353,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dragon",
+		contestType: "Tough",
 	},
 	"dynamicpunch": {
 		num: 223,
@@ -3236,6 +3373,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Fighting",
+		contestType: "Cool",
 	},
 	"earthpower": {
 		num: 414,
@@ -3258,6 +3396,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Ground",
+		contestType: "Beautiful",
 	},
 	"earthquake": {
 		num: 89,
@@ -3275,6 +3414,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacent",
 		type: "Ground",
+		contestType: "Tough",
 	},
 	"echoedvoice": {
 		num: 497,
@@ -3314,6 +3454,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Beautiful",
 	},
 	"eerieimpulse": {
 		num: 598,
@@ -3333,6 +3474,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Electric",
+		contestType: "Clever",
 	},
 	"eggbomb": {
 		num: 121,
@@ -3349,6 +3491,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"electricterrain": {
 		num: 604,
@@ -3395,6 +3538,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "all",
 		type: "Electric",
+		contestType: "Clever",
 	},
 	"electrify": {
 		num: 582,
@@ -3423,13 +3567,14 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Electric",
+		contestType: "Clever",
 	},
 	"electroball": {
 		num: 486,
 		accuracy: 100,
 		basePower: 0,
 		basePowerCallback: function (pokemon, target) {
-			let ratio = (pokemon.getStat('spe') / target.getStat('spe'));
+			var ratio = (pokemon.getStat('spe') / target.getStat('spe'));
 			this.debug([40, 60, 80, 120, 150][(Math.floor(ratio) > 4 ? 4 : Math.floor(ratio))] + ' bp');
 			if (ratio >= 4) {
 				return 150;
@@ -3456,6 +3601,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Electric",
+		contestType: "Cool",
 	},
 	"electroweb": {
 		num: 527,
@@ -3477,6 +3623,7 @@ exports.BattleMovedex = {
 		},
 		target: "allAdjacentFoes",
 		type: "Electric",
+		contestType: "Beautiful",
 	},
 	"embargo": {
 		num: 373,
@@ -3505,6 +3652,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Clever",
 	},
 	"ember": {
 		num: 52,
@@ -3524,6 +3672,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Fire",
+		contestType: "Cute",
 	},
 	"encore": {
 		num: 227,
@@ -3542,8 +3691,8 @@ exports.BattleMovedex = {
 		effect: {
 			duration: 3,
 			onStart: function (target) {
-				let noEncore = {encore:1, mimic:1, mirrormove:1, sketch:1, struggle:1, transform:1};
-				let moveIndex = target.moves.indexOf(target.lastMove);
+				var noEncore = {encore:1, mimic:1, mirrormove:1, sketch:1, struggle:1, transform:1};
+				var moveIndex = target.moves.indexOf(target.lastMove);
 				if (!target.lastMove || noEncore[target.lastMove] || (target.moveset[moveIndex] && target.moveset[moveIndex].pp <= 0)) {
 					// it failed
 					delete target.volatiles['encore'];
@@ -3572,7 +3721,7 @@ exports.BattleMovedex = {
 				if (!this.effectData.move || !pokemon.hasMove(this.effectData.move)) {
 					return;
 				}
-				for (let i = 0; i < pokemon.moveset.length; i++) {
+				for (var i = 0; i < pokemon.moveset.length; i++) {
 					if (pokemon.moveset[i].id !== this.effectData.move) {
 						pokemon.disableMove(pokemon.moveset[i].id);
 					}
@@ -3582,6 +3731,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"endeavor": {
 		num: 283,
@@ -3607,6 +3757,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"endure": {
 		num: 203,
@@ -3644,6 +3795,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"energyball": {
 		num: 412,
@@ -3666,6 +3818,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Grass",
+		contestType: "Beautiful",
 	},
 	"entrainment": {
 		num: 494,
@@ -3681,14 +3834,14 @@ exports.BattleMovedex = {
 		flags: {protect: 1, reflectable: 1, mirror: 1},
 		onTryHit: function (target, source) {
 			if (target === source) return false;
-			let bannedTargetAbilities = {multitype:1, stancechange:1, truant:1};
-			let bannedSourceAbilities = {flowergift:1, forecast:1, illusion:1, imposter:1, multitype:1, stancechange:1, trace:1, zenmode:1};
+			var bannedTargetAbilities = {multitype:1, stancechange:1, truant:1};
+			var bannedSourceAbilities = {flowergift:1, forecast:1, illusion:1, imposter:1, multitype:1, stancechange:1, trace:1, zenmode:1};
 			if (bannedTargetAbilities[target.ability] || bannedSourceAbilities[source.ability] || target.ability === source.ability) {
 				return false;
 			}
 		},
 		onHit: function (target, source) {
-			let oldAbility = target.setAbility(source.ability);
+			var oldAbility = target.setAbility(source.ability);
 			if (oldAbility) {
 				this.add('-ability', target, this.getAbility(target.ability).name, '[from] move: Entrainment');
 				return;
@@ -3698,13 +3851,14 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"eruption": {
 		num: 284,
 		accuracy: 100,
 		basePower: 150,
-		basePowerCallback: function (pokemon) {
-			return 150 * pokemon.hp / pokemon.maxhp;
+		basePowerCallback: function (pokemon, target, move) {
+			return move.basePower * pokemon.hp / pokemon.maxhp;
 		},
 		category: "Special",
 		desc: "Power is equal to (user's current HP * 150 / user's maximum HP), rounded down, but not less than 1.",
@@ -3718,6 +3872,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Fire",
+		contestType: "Beautiful",
 	},
 	"explosion": {
 		num: 153,
@@ -3736,6 +3891,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacent",
 		type: "Normal",
+		contestType: "Beautiful",
 	},
 	"extrasensory": {
 		num: 326,
@@ -3756,6 +3912,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Psychic",
+		contestType: "Cool",
 	},
 	"extremespeed": {
 		num: 245,
@@ -3773,6 +3930,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"facade": {
 		num: 263,
@@ -3796,6 +3954,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"feintattack": {
 		num: 185,
@@ -3812,6 +3971,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Clever",
 	},
 	"fairylock": {
 		num: 587,
@@ -3838,6 +3998,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "all",
 		type: "Fairy",
+		contestType: "Clever",
 	},
 	"fairywind": {
 		num: 584,
@@ -3854,6 +4015,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fairy",
+		contestType: "Beautiful",
 	},
 	"fakeout": {
 		num: 252,
@@ -3881,6 +4043,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"faketears": {
 		num: 313,
@@ -3900,6 +4063,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Cute",
 	},
 	"falseswipe": {
 		num: 206,
@@ -3917,6 +4081,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"featherdance": {
 		num: 297,
@@ -3936,6 +4101,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Flying",
+		contestType: "Beautiful",
 	},
 	"feint": {
 		num: 364,
@@ -3954,6 +4120,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"fellstinger": {
 		num: 565,
@@ -3980,6 +4147,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Bug",
+		contestType: "Cool",
 	},
 	"fierydance": {
 		num: 552,
@@ -4004,13 +4172,14 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Fire",
+		contestType: "Beautiful",
 	},
 	"finalgambit": {
 		num: 515,
 		accuracy: 100,
 		basePower: 0,
 		damageCallback: function (pokemon) {
-			let damage = pokemon.hp;
+			var damage = pokemon.hp;
 			pokemon.faint();
 			return damage;
 		},
@@ -4027,6 +4196,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Tough",
 	},
 	"fireblast": {
 		num: 126,
@@ -4047,6 +4217,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Fire",
+		contestType: "Beautiful",
 	},
 	"firefang": {
 		num: 424,
@@ -4072,6 +4243,7 @@ exports.BattleMovedex = {
 		],
 		target: "normal",
 		type: "Fire",
+		contestType: "Cool",
 	},
 	"firepledge": {
 		num: 519,
@@ -4093,8 +4265,8 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {protect: 1, mirror: 1, nonsky: 1},
 		onPrepareHit: function (target, source, move) {
-			for (let i = 0; i < this.queue.length; i++) {
-				let decision = this.queue[i];
+			for (var i = 0; i < this.queue.length; i++) {
+				var decision = this.queue[i];
 				if (!decision.move || !decision.pokemon || !decision.pokemon.isActive || decision.pokemon.fainted) continue;
 				if (decision.pokemon.side === source.side && decision.move.id in {grasspledge:1, waterpledge:1}) {
 					this.prioritizeQueue(decision);
@@ -4130,8 +4302,8 @@ exports.BattleMovedex = {
 				this.add('-sideend', targetSide, 'Fire Pledge');
 			},
 			onResidual: function (side) {
-				for (let i = 0; i < side.active.length; i++) {
-					let pokemon = side.active[i];
+				for (var i = 0; i < side.active.length; i++) {
+					var pokemon = side.active[i];
 					if (pokemon && !pokemon.hasType('Fire')) {
 						this.damage(pokemon.maxhp / 8, pokemon);
 					}
@@ -4141,6 +4313,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fire",
+		contestType: "Beautiful",
 	},
 	"firepunch": {
 		num: 7,
@@ -4161,6 +4334,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Fire",
+		contestType: "Tough",
 	},
 	"firespin": {
 		num: 83,
@@ -4178,6 +4352,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fire",
+		contestType: "Beautiful",
 	},
 	"fissure": {
 		num: 90,
@@ -4195,13 +4370,14 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ground",
+		contestType: "Tough",
 	},
 	"flail": {
 		num: 175,
 		accuracy: 100,
 		basePower: 0,
 		basePowerCallback: function (pokemon, target) {
-			let ratio = pokemon.hp * 48 / pokemon.maxhp;
+			var ratio = pokemon.hp * 48 / pokemon.maxhp;
 			if (ratio < 2) {
 				return 200;
 			}
@@ -4230,6 +4406,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"flameburst": {
 		num: 481,
@@ -4244,11 +4421,11 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {protect: 1, mirror: 1},
 		onHit: function (target, source) {
-			let allyActive = target.side.active;
+			var allyActive = target.side.active;
 			if (allyActive.length === 1) {
 				return;
 			}
-			for (let i = 0; i < allyActive.length; i++) {
+			for (var i = 0; i < allyActive.length; i++) {
 				if (allyActive[i] && this.isAdjacent(target, allyActive[i])) {
 					this.damage(allyActive[i].maxhp / 16, allyActive[i], source, 'flameburst');
 				}
@@ -4257,6 +4434,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fire",
+		contestType: "Beautiful",
 	},
 	"flamecharge": {
 		num: 488,
@@ -4281,6 +4459,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Fire",
+		contestType: "Cool",
 	},
 	"flamewheel": {
 		num: 172,
@@ -4300,6 +4479,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Fire",
+		contestType: "Beautiful",
 	},
 	"flamethrower": {
 		num: 53,
@@ -4320,6 +4500,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Fire",
+		contestType: "Beautiful",
 	},
 	"flareblitz": {
 		num: 394,
@@ -4341,6 +4522,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Fire",
+		contestType: "Cool",
 	},
 	"flash": {
 		num: 148,
@@ -4360,6 +4542,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Beautiful",
 	},
 	"flashcannon": {
 		num: 430,
@@ -4382,6 +4565,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Steel",
+		contestType: "Beautiful",
 	},
 	"flatter": {
 		num: 260,
@@ -4402,6 +4586,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Clever",
 	},
 	"fling": {
 		num: 374,
@@ -4417,8 +4602,8 @@ exports.BattleMovedex = {
 		flags: {protect: 1, mirror: 1},
 		beforeMoveCallback: function (pokemon) {
 			if (pokemon.ignoringItem()) return;
-			let item = pokemon.getItem();
-			let noFling = item.onTakeItem && item.onTakeItem(item, pokemon) === false;
+			var item = pokemon.getItem();
+			var noFling = item.onTakeItem && item.onTakeItem(item, pokemon) === false;
 			if (item.fling && !noFling) {
 				pokemon.addVolatile('fling');
 				pokemon.setItem('');
@@ -4427,8 +4612,11 @@ exports.BattleMovedex = {
 		},
 		onPrepareHit: function (target, source, move) {
 			if (!source.volatiles['fling']) return false;
-			let item = this.getItem(source.volatiles['fling'].item);
+			var item = this.getItem(source.volatiles['fling'].item);
 			this.add("-enditem", source, item.name, '[from] move: Fling');
+		},
+		onAfterMove: function (pokemon) {
+			pokemon.removeVolatile('fling');
 		},
 		effect: {
 			duration: 1,
@@ -4437,11 +4625,12 @@ exports.BattleMovedex = {
 			},
 			onModifyMovePriority: -3,
 			onModifyMove: function (move) {
-				let item = this.getItem(this.effectData.item);
+				var item = this.getItem(this.effectData.item);
 				move.basePower = item.fling.basePower;
 				if (item.isBerry && item.id !== 'enigmaberry') {
 					move.onHit = function (foe) {
 						this.singleEvent('Eat', item, null, foe, null, null);
+						this.runEvent('EatItem', foe, null, null, item);
 						foe.ateBerry = true;
 					};
 				} else if (item.fling.effect) {
@@ -4459,6 +4648,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Cute",
 	},
 	"flowershield": {
 		num: 579,
@@ -4473,10 +4663,10 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {distance: 1},
 		onHitField: function (target, source) {
-			let targets = [];
-			for (let sideSlot = 0; sideSlot < this.sides.length; sideSlot++) {
-				let sideActive = this.sides[sideSlot].active;
-				for (let activeSlot = 0; activeSlot < sideActive.length; activeSlot++) {
+			var targets = [];
+			for (var sideSlot = 0; sideSlot < this.sides.length; sideSlot++) {
+				var sideActive = this.sides[sideSlot].active;
+				for (var activeSlot = 0; activeSlot < sideActive.length; activeSlot++) {
 					if (sideActive[activeSlot] && sideActive[activeSlot].isActive && sideActive[activeSlot].hasType('Grass')) {
 						// This move affects every Grass-type Pokemon in play.
 						targets.push(sideActive[activeSlot]);
@@ -4484,13 +4674,14 @@ exports.BattleMovedex = {
 				}
 			}
 			if (!targets.length) return false; // No targets; move fails
-			for (let i = 0; i < targets.length; i++) {
+			for (var i = 0; i < targets.length; i++) {
 				this.boost({def: 1}, targets[i], source, this.getMove('Flower Shield'));
 			}
 		},
 		secondary: false,
 		target: "all",
 		type: "Fairy",
+		contestType: "Beautiful",
 	},
 	"fly": {
 		num: 19,
@@ -4540,6 +4731,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "any",
 		type: "Flying",
+		contestType: "Clever",
 	},
 	"flyingpress": {
 		num: 560,
@@ -4559,6 +4751,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "any",
 		type: "Fighting",
+		contestType: "Tough",
 	},
 	"focusblast": {
 		num: 411,
@@ -4581,6 +4774,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Fighting",
+		contestType: "Cool",
 	},
 	"focusenergy": {
 		num: 116,
@@ -4599,13 +4793,14 @@ exports.BattleMovedex = {
 			onStart: function (pokemon) {
 				this.add('-start', pokemon, 'move: Focus Energy');
 			},
-			onModifyMove: function (move) {
-				move.critRatio += 2;
+			onModifyCritRatio: function (critRatio) {
+				return critRatio + 2;
 			},
 		},
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"focuspunch": {
 		num: 264,
@@ -4642,6 +4837,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Tough",
 	},
 	"followme": {
 		num: 266,
@@ -4659,7 +4855,7 @@ exports.BattleMovedex = {
 		effect: {
 			duration: 1,
 			onStart: function (pokemon) {
-				this.add('-start', pokemon, 'move: Follow Me');
+				this.add('-singleturn', pokemon, 'move: Follow Me');
 			},
 			onFoeRedirectTargetPriority: 1,
 			onFoeRedirectTarget: function (target, source, source2, move) {
@@ -4672,6 +4868,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"forcepalm": {
 		num: 395,
@@ -4691,6 +4888,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Fighting",
+		contestType: "Cool",
 	},
 	"foresight": {
 		num: 193,
@@ -4724,6 +4922,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"forestscurse": {
 		num: 571,
@@ -4745,6 +4944,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Clever",
 	},
 	"foulplay": {
 		num: 492,
@@ -4763,6 +4963,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Clever",
 	},
 	"freezedry": {
 		num: 573,
@@ -4786,6 +4987,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Ice",
+		contestType: "Beautiful",
 	},
 	"freezeshock": {
 		num: 553,
@@ -4817,6 +5019,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Ice",
+		contestType: "Beautiful",
 	},
 	"frenzyplant": {
 		num: 338,
@@ -4836,6 +5039,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Cool",
 	},
 	"frostbreath": {
 		num: 524,
@@ -4853,6 +5057,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ice",
+		contestType: "Beautiful",
 	},
 	"frustration": {
 		num: 218,
@@ -4873,6 +5078,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"furyattack": {
 		num: 31,
@@ -4890,16 +5096,17 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"furycutter": {
 		num: 210,
 		accuracy: 95,
 		basePower: 40,
-		basePowerCallback: function (pokemon) {
+		basePowerCallback: function (pokemon, target, move) {
 			if (!pokemon.volatiles.furycutter) {
 				pokemon.addVolatile('furycutter');
 			}
-			return 40 * pokemon.volatiles.furycutter.multiplier;
+			return this.clampIntRange(move.basePower * pokemon.volatiles.furycutter.multiplier, 1, 160);
 		},
 		category: "Physical",
 		desc: "Power doubles with each successful hit, up to a maximum of 160 power; resets to 40 power if the move misses or another move is used.",
@@ -4927,6 +5134,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Bug",
+		contestType: "Cool",
 	},
 	"furyswipes": {
 		num: 154,
@@ -4944,6 +5152,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"fusionbolt": {
 		num: 559,
@@ -4960,8 +5169,8 @@ exports.BattleMovedex = {
 		flags: {protect: 1, mirror: 1},
 		onBasePowerPriority: 4,
 		onBasePower: function (basePower, pokemon) {
-			let actives = pokemon.side.active;
-			for (let i = 0; i < actives.length; i++) {
+			var actives = pokemon.side.active;
+			for (var i = 0; i < actives.length; i++) {
 				if (actives[i] && actives[i].moveThisTurn === 'fusionflare') {
 					this.debug('double power');
 					return this.chainModify(2);
@@ -4971,6 +5180,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Electric",
+		contestType: "Cool",
 	},
 	"fusionflare": {
 		num: 558,
@@ -4987,8 +5197,8 @@ exports.BattleMovedex = {
 		flags: {protect: 1, mirror: 1, defrost: 1},
 		onBasePowerPriority: 4,
 		onBasePower: function (basePower, pokemon) {
-			let actives = pokemon.side.active;
-			for (let i = 0; i < actives.length; i++) {
+			var actives = pokemon.side.active;
+			for (var i = 0; i < actives.length; i++) {
 				if (actives[i] && actives[i].moveThisTurn === 'fusionbolt') {
 					this.debug('double power');
 					return this.chainModify(2);
@@ -4998,6 +5208,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fire",
+		contestType: "Beautiful",
 	},
 	"futuresight": {
 		num: 248,
@@ -5041,6 +5252,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"gastroacid": {
 		num: 380,
@@ -5056,7 +5268,7 @@ exports.BattleMovedex = {
 		flags: {protect: 1, reflectable: 1, mirror: 1},
 		volatileStatus: 'gastroacid',
 		onTryHit: function (pokemon) {
-			let bannedAbilities = {multitype:1, stancechange:1};
+			var bannedAbilities = {multitype:1, stancechange:1};
 			if (bannedAbilities[pokemon.ability]) {
 				return false;
 			}
@@ -5071,6 +5283,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Poison",
+		contestType: "Tough",
 	},
 	"geargrind": {
 		num: 544,
@@ -5089,6 +5302,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Steel",
+		contestType: "Clever",
 	},
 	"geomancy": {
 		num: 601,
@@ -5124,6 +5338,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Fairy",
+		contestType: "Beautiful",
 	},
 	"gigadrain": {
 		num: 202,
@@ -5142,6 +5357,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Clever",
 	},
 	"gigaimpact": {
 		num: 416,
@@ -5161,6 +5377,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"glaciate": {
 		num: 549,
@@ -5182,6 +5399,7 @@ exports.BattleMovedex = {
 		},
 		target: "allAdjacentFoes",
 		type: "Ice",
+		contestType: "Beautiful",
 	},
 	"glare": {
 		num: 137,
@@ -5200,13 +5418,14 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"grassknot": {
 		num: 447,
 		accuracy: 100,
 		basePower: 0,
 		basePowerCallback: function (pokemon, target) {
-			let targetWeight = target.getWeight();
+			var targetWeight = target.getWeight();
 			if (targetWeight >= 200) {
 				this.debug('120 bp');
 				return 120;
@@ -5242,6 +5461,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Cute",
 	},
 	"grasspledge": {
 		num: 520,
@@ -5263,8 +5483,8 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {protect: 1, mirror: 1, nonsky: 1},
 		onPrepareHit: function (target, source, move) {
-			for (let i = 0; i < this.queue.length; i++) {
-				let decision = this.queue[i];
+			for (var i = 0; i < this.queue.length; i++) {
+				var decision = this.queue[i];
 				if (!decision.move || !decision.pokemon || !decision.pokemon.isActive || decision.pokemon.fainted) continue;
 				if (decision.pokemon.side === source.side && decision.move.id in {waterpledge:1, firepledge:1}) {
 					this.prioritizeQueue(decision);
@@ -5306,6 +5526,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Beautiful",
 	},
 	"grasswhistle": {
 		num: 320,
@@ -5323,6 +5544,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Clever",
 	},
 	"grassyterrain": {
 		num: 580,
@@ -5340,7 +5562,7 @@ exports.BattleMovedex = {
 		effect: {
 			duration: 5,
 			onBasePower: function (basePower, attacker, defender, move) {
-				let weakenedMoves = {'earthquake':1, 'bulldoze':1, 'magnitude':1};
+				var weakenedMoves = {'earthquake':1, 'bulldoze':1, 'magnitude':1};
 				if (move.id in weakenedMoves) {
 					this.debug('move weakened by grassy terrain');
 					return this.chainModify(0.5);
@@ -5357,9 +5579,9 @@ exports.BattleMovedex = {
 			onResidualSubOrder: 2,
 			onResidual: function (battle) {
 				this.debug('onResidual battle');
-				let pokemon;
-				for (let s in battle.sides) {
-					for (let p in battle.sides[s].active) {
+				var pokemon;
+				for (var s in battle.sides) {
+					for (var p in battle.sides[s].active) {
 						pokemon = battle.sides[s].active[p];
 						if (pokemon.isGrounded() && !pokemon.isSemiInvulnerable()) {
 							this.debug('Pokemon is grounded, healing through Grassy Terrain.');
@@ -5375,6 +5597,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "all",
 		type: "Grass",
+		contestType: "Beautiful",
 	},
 	"gravity": {
 		num: 356,
@@ -5399,48 +5622,46 @@ exports.BattleMovedex = {
 			},
 			onStart: function () {
 				this.add('-fieldstart', 'move: Gravity');
+				const allActivePokemon = this.sides[0].active.concat(this.sides[1].active);
+				for (var pokemon of allActivePokemon) {
+					var applies = false;
+					if (pokemon.removeVolatile('bounce') || pokemon.removeVolatile('fly')) {
+						applies = true;
+						this.cancelMove(pokemon);
+						pokemon.removeVolatile('twoturnmove');
+					}
+					if (pokemon.volatiles['skydrop']) {
+						applies = true;
+						this.cancelMove(pokemon);
+
+						if (pokemon.volatiles['skydrop'].source) {
+							this.add('-end', pokemon.volatiles['twoturnmove'].source, 'Sky Drop', '[interrupt]');
+						}
+						pokemon.removeVolatile('skydrop');
+						pokemon.removeVolatile('twoturnmove');
+					}
+					if (pokemon.volatiles['magnetrise']) {
+						applies = true;
+						delete pokemon.volatiles['magnetrise'];
+					}
+					if (pokemon.volatiles['telekinesis']) {
+						applies = true;
+						delete pokemon.volatiles['telekinesis'];
+					}
+					if (applies) this.add('-activate', pokemon, 'Gravity');
+				}
 			},
 			onModifyAccuracy: function (accuracy) {
 				if (typeof accuracy !== 'number') return;
 				return accuracy * 5 / 3;
 			},
 			onDisableMove: function (pokemon) {
-				let disabledMoves = {bounce:1, fly:1, flyingpress:1, highjumpkick:1, jumpkick:1, magnetrise:1, skydrop:1, splash:1, telekinesis:1};
-				for (let m in disabledMoves) {
+				var disabledMoves = {bounce:1, fly:1, flyingpress:1, highjumpkick:1, jumpkick:1, magnetrise:1, skydrop:1, splash:1, telekinesis:1};
+				for (var m in disabledMoves) {
 					pokemon.disableMove(m);
 				}
 			},
-			onModifyPokemonPriority: 100,
-			onModifyPokemon: function (pokemon) {
-				let applies = false;
-				if (pokemon.removeVolatile('bounce') || pokemon.removeVolatile('fly')) {
-					applies = true;
-					this.cancelMove(pokemon);
-					pokemon.removeVolatile('twoturnmove');
-				}
-				if (pokemon.volatiles['skydrop']) {
-					applies = true;
-					this.cancelMove(pokemon);
-
-					if (pokemon.volatiles['skydrop'].source) {
-						this.add('-end', pokemon.volatiles['twoturnmove'].source, 'Sky Drop', '[interrupt]');
-					}
-					pokemon.removeVolatile('skydrop');
-					pokemon.removeVolatile('twoturnmove');
-				}
-				if (pokemon.volatiles['magnetrise']) {
-					applies = true;
-					delete pokemon.volatiles['magnetrise'];
-				}
-				if (pokemon.volatiles['telekinesis']) {
-					applies = true;
-					delete pokemon.volatiles['telekinesis'];
-				}
-				if (applies) this.add('-activate', pokemon, 'Gravity');
-			},
-			onNegateImmunity: function (pokemon, type) {
-				if (type === 'Ground') return false;
-			},
+			// groundedness implemented in battle.engine.js:BattlePokemon#isGrounded
 			onBeforeMovePriority: 6,
 			onBeforeMove: function (pokemon, target, move) {
 				if (move.flags['gravity']) {
@@ -5456,6 +5677,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "all",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"growl": {
 		num: 45,
@@ -5475,6 +5697,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"growth": {
 		num: 74,
@@ -5498,6 +5721,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Beautiful",
 	},
 	"grudge": {
 		num: 288,
@@ -5519,7 +5743,7 @@ exports.BattleMovedex = {
 			onFaint: function (target, source, effect) {
 				if (!source || !effect) return;
 				if (effect.effectType === 'Move' && !effect.isFutureMove) {
-					for (let i in source.moveset) {
+					for (var i in source.moveset) {
 						if (source.moveset[i].id === source.lastMove) {
 							source.moveset[i].pp = 0;
 							this.add('-activate', source, 'Grudge', this.getMove(source.lastMove).name);
@@ -5536,6 +5760,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Ghost",
+		contestType: "Tough",
 	},
 	"guardsplit": {
 		num: 470,
@@ -5550,10 +5775,10 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {protect: 1},
 		onHit: function (target, source) {
-			let newdef = Math.floor((target.stats.def + source.stats.def) / 2);
+			var newdef = Math.floor((target.stats.def + source.stats.def) / 2);
 			target.stats.def = newdef;
 			source.stats.def = newdef;
-			let newspd = Math.floor((target.stats.spd + source.stats.spd) / 2);
+			var newspd = Math.floor((target.stats.spd + source.stats.spd) / 2);
 			target.stats.spd = newspd;
 			source.stats.spd = newspd;
 			this.add('-activate', source, 'Guard Split', '[of] ' + target);
@@ -5561,6 +5786,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"guardswap": {
 		num: 385,
@@ -5575,10 +5801,10 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {protect: 1, mirror: 1, authentic: 1},
 		onHit: function (target, source) {
-			let targetBoosts = {};
-			let sourceBoosts = {};
+			var targetBoosts = {};
+			var sourceBoosts = {};
 
-			for (let i in {def:1, spd:1}) {
+			for (var i in {def:1, spd:1}) {
 				targetBoosts[i] = target.boosts[i];
 				sourceBoosts[i] = source.boosts[i];
 			}
@@ -5591,6 +5817,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"guillotine": {
 		num: 12,
@@ -5608,6 +5835,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"gunkshot": {
 		num: 441,
@@ -5628,6 +5856,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Poison",
+		contestType: "Tough",
 	},
 	"gust": {
 		num: 16,
@@ -5644,13 +5873,14 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "any",
 		type: "Flying",
+		contestType: "Clever",
 	},
 	"gyroball": {
 		num: 360,
 		accuracy: 100,
 		basePower: 0,
 		basePowerCallback: function (pokemon, target) {
-			let power = (Math.floor(25 * target.getStat('spe') / pokemon.getStat('spe')) || 1);
+			var power = (Math.floor(25 * target.getStat('spe') / pokemon.getStat('spe')) || 1);
 			if (power > 150) power = 150;
 			this.debug('' + power + ' bp');
 			return power;
@@ -5667,6 +5897,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Steel",
+		contestType: "Cool",
 	},
 	"hail": {
 		num: 258,
@@ -5684,6 +5915,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "all",
 		type: "Ice",
+		contestType: "Beautiful",
 	},
 	"hammerarm": {
 		num: 359,
@@ -5706,6 +5938,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Tough",
 	},
 	"happyhour": {
 		num: 603,
@@ -5726,6 +5959,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allySide",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"harden": {
 		num: 106,
@@ -5745,6 +5979,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"haze": {
 		num: 114,
@@ -5761,8 +5996,8 @@ exports.BattleMovedex = {
 		flags: {authentic: 1},
 		onHitField: function () {
 			this.add('-clearallboost');
-			for (let i = 0; i < this.sides.length; i++) {
-				for (let j = 0; j < this.sides[i].active.length; j++) {
+			for (var i = 0; i < this.sides.length; i++) {
+				for (var j = 0; j < this.sides[i].active.length; j++) {
 					if (this.sides[i].active[j] && this.sides[i].active[j].isActive) this.sides[i].active[j].clearBoosts();
 				}
 			}
@@ -5770,6 +6005,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "all",
 		type: "Ice",
+		contestType: "Beautiful",
 	},
 	"headcharge": {
 		num: 543,
@@ -5788,6 +6024,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"headsmash": {
 		num: 457,
@@ -5806,6 +6043,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Rock",
+		contestType: "Tough",
 	},
 	"headbutt": {
 		num: 29,
@@ -5825,6 +6063,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"healbell": {
 		num: 215,
@@ -5840,8 +6079,8 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {snatch: 1, sound: 1, distance: 1, authentic: 1},
 		onHit: function (pokemon, source) {
-			let side = pokemon.side;
-			for (let i = 0; i < side.pokemon.length; i++) {
+			var side = pokemon.side;
+			for (var i = 0; i < side.pokemon.length; i++) {
 				if (side.pokemon[i].hasAbility('soundproof')) continue;
 				side.pokemon[i].status = '';
 			}
@@ -5849,6 +6088,7 @@ exports.BattleMovedex = {
 		},
 		target: "allyTeam",
 		type: "Normal",
+		contestType: "Beautiful",
 	},
 	"healblock": {
 		num: 377,
@@ -5875,9 +6115,9 @@ exports.BattleMovedex = {
 				this.add('-start', pokemon, 'move: Heal Block');
 			},
 			onDisableMove: function (pokemon) {
-				let disabledMoves = {healingwish:1, lunardance:1, rest:1, swallow:1, wish:1};
-				let move;
-				for (let i = 0; i < pokemon.moveset.length; i++) {
+				var disabledMoves = {healingwish:1, lunardance:1, rest:1, swallow:1, wish:1};
+				var move;
+				for (var i = 0; i < pokemon.moveset.length; i++) {
 					if (disabledMoves[pokemon.moveset[i].id] || (move = this.getMove(pokemon.moveset[i].id)).heal || move.drain) {
 						pokemon.disableMove(pokemon.moveset[i].id);
 					}
@@ -5885,7 +6125,7 @@ exports.BattleMovedex = {
 			},
 			onBeforeMovePriority: 6,
 			onBeforeMove: function (pokemon, target, move) {
-				let disabledMoves = {healingwish:1, lunardance:1, rest:1, swallow:1, wish:1};
+				var disabledMoves = {healingwish:1, lunardance:1, rest:1, swallow:1, wish:1};
 				if (disabledMoves[move.id] || move.heal || move.drain) {
 					this.add('cant', pokemon, 'move: Heal Block', move);
 					return false;
@@ -5900,6 +6140,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"healorder": {
 		num: 456,
@@ -5918,6 +6159,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Bug",
+		contestType: "Clever",
 	},
 	"healpulse": {
 		num: 505,
@@ -5941,6 +6183,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "any",
 		type: "Psychic",
+		contestType: "Beautiful",
 	},
 	"healingwish": {
 		num: 361,
@@ -5968,7 +6211,7 @@ exports.BattleMovedex = {
 			onStart: function (side, source) {
 				this.debug('Healing Wish started on ' + side.name);
 				this.effectData.positions = [];
-				for (let i = 0; i < side.active.length; i++) {
+				for (var i = 0; i < side.active.length; i++) {
 					this.effectData.positions[i] = false;
 				}
 				this.effectData.positions[source.position] = true;
@@ -5987,14 +6230,13 @@ exports.BattleMovedex = {
 					this.add('-heal', target, target.getHealth, '[from] move: Healing Wish');
 					this.effectData.positions[target.position] = false;
 				}
-				if (!this.effectData.positions.any(true)) {
-					target.side.removeSideCondition('healingwish');
-				}
+				
 			},
 		},
 		secondary: false,
 		target: "self",
 		type: "Psychic",
+		contestType: "Beautiful",
 	},
 	"heartstamp": {
 		num: 531,
@@ -6014,6 +6256,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Psychic",
+		contestType: "Cute",
 	},
 	"heartswap": {
 		num: 391,
@@ -6028,10 +6271,10 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {protect: 1, mirror: 1, authentic: 1},
 		onHit: function (target, source) {
-			let targetBoosts = {};
-			let sourceBoosts = {};
+			var targetBoosts = {};
+			var sourceBoosts = {};
 
-			for (let i in target.boosts) {
+			for (var i in target.boosts) {
 				targetBoosts[i] = target.boosts[i];
 				sourceBoosts[i] = source.boosts[i];
 			}
@@ -6044,14 +6287,15 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"heatcrash": {
 		num: 535,
 		accuracy: 100,
 		basePower: 0,
 		basePowerCallback: function (pokemon, target) {
-			let targetWeight = target.getWeight();
-			let pokemonWeight = pokemon.getWeight();
+			var targetWeight = target.getWeight();
+			var pokemonWeight = pokemon.getWeight();
 			if (pokemonWeight > targetWeight * 5) {
 				return 120;
 			}
@@ -6077,6 +6321,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fire",
+		contestType: "Tough",
 	},
 	"heatwave": {
 		num: 257,
@@ -6097,14 +6342,15 @@ exports.BattleMovedex = {
 		},
 		target: "allAdjacentFoes",
 		type: "Fire",
+		contestType: "Beautiful",
 	},
 	"heavyslam": {
 		num: 484,
 		accuracy: 100,
 		basePower: 0,
 		basePowerCallback: function (pokemon, target) {
-			let targetWeight = target.getWeight();
-			let pokemonWeight = pokemon.getWeight();
+			var targetWeight = target.getWeight();
+			var pokemonWeight = pokemon.getWeight();
 			if (pokemonWeight > targetWeight * 5) {
 				return 120;
 			}
@@ -6131,6 +6377,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Steel",
+		contestType: "Tough",
 	},
 	"helpinghand": {
 		num: 270,
@@ -6164,14 +6411,15 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "adjacentAlly",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"hex": {
 		num: 506,
 		accuracy: 100,
 		basePower: 65,
-		basePowerCallback: function (pokemon, target) {
-			if (target.status) return 130;
-			return 65;
+		basePowerCallback: function (pokemon, target, move) {
+			if (target.status) return move.basePower * 2;
+			return move.basePower;
 		},
 		category: "Special",
 		desc: "Power doubles if the target has a major status condition.",
@@ -6185,6 +6433,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ghost",
+		contestType: "Clever",
 	},
 	"hiddenpower": {
 		num: 237,
@@ -6204,6 +6453,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"hiddenpowerbug": {
 		accuracy: 100,
@@ -6219,6 +6469,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Bug",
+		contestType: "Clever",
 	},
 	"hiddenpowerdark": {
 		accuracy: 100,
@@ -6234,6 +6485,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Clever",
 	},
 	"hiddenpowerdragon": {
 		accuracy: 100,
@@ -6249,6 +6501,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dragon",
+		contestType: "Clever",
 	},
 	"hiddenpowerelectric": {
 		accuracy: 100,
@@ -6265,6 +6518,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Electric",
+		contestType: "Clever",
 	},
 	"hiddenpowerfighting": {
 		accuracy: 100,
@@ -6281,6 +6535,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Clever",
 	},
 	"hiddenpowerfire": {
 		accuracy: 100,
@@ -6297,6 +6552,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fire",
+		contestType: "Clever",
 	},
 	"hiddenpowerflying": {
 		accuracy: 100,
@@ -6312,6 +6568,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Flying",
+		contestType: "Clever",
 	},
 	"hiddenpowerghost": {
 		accuracy: 100,
@@ -6327,6 +6584,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ghost",
+		contestType: "Clever",
 	},
 	"hiddenpowergrass": {
 		accuracy: 100,
@@ -6343,6 +6601,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Clever",
 	},
 	"hiddenpowerground": {
 		accuracy: 100,
@@ -6358,6 +6617,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ground",
+		contestType: "Clever",
 	},
 	"hiddenpowerice": {
 		accuracy: 100,
@@ -6374,6 +6634,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ice",
+		contestType: "Clever",
 	},
 	"hiddenpowerpoison": {
 		accuracy: 100,
@@ -6389,6 +6650,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Poison",
+		contestType: "Clever",
 	},
 	"hiddenpowerpsychic": {
 		accuracy: 100,
@@ -6404,6 +6666,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"hiddenpowerrock": {
 		accuracy: 100,
@@ -6419,6 +6682,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Rock",
+		contestType: "Clever",
 	},
 	"hiddenpowersteel": {
 		accuracy: 100,
@@ -6434,6 +6698,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Steel",
+		contestType: "Clever",
 	},
 	"hiddenpowerwater": {
 		accuracy: 100,
@@ -6449,6 +6714,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Water",
+		contestType: "Clever",
 	},
 	"highjumpkick": {
 		num: 136,
@@ -6470,6 +6736,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Cool",
 	},
 	"holdback": {
 		num: 610,
@@ -6487,6 +6754,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"holdhands": {
 		num: 615,
@@ -6506,6 +6774,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "adjacentAlly",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"honeclaws": {
 		num: 468,
@@ -6527,6 +6796,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Dark",
+		contestType: "Cute",
 	},
 	"hornattack": {
 		num: 30,
@@ -6543,6 +6813,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"horndrill": {
 		num: 32,
@@ -6560,6 +6831,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"hornleech": {
 		num: 532,
@@ -6578,6 +6850,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Tough",
 	},
 	"howl": {
 		num: 336,
@@ -6597,6 +6870,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"hurricane": {
 		num: 542,
@@ -6624,6 +6898,7 @@ exports.BattleMovedex = {
 		},
 		target: "any",
 		type: "Flying",
+		contestType: "Tough",
 	},
 	"hydrocannon": {
 		num: 308,
@@ -6643,6 +6918,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Water",
+		contestType: "Beautiful",
 	},
 	"hydropump": {
 		num: 56,
@@ -6660,6 +6936,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Water",
+		contestType: "Beautiful",
 	},
 	"hyperbeam": {
 		num: 63,
@@ -6679,6 +6956,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"hyperfang": {
 		num: 158,
@@ -6698,6 +6976,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"hyperspacefury": {
 		num: 621,
@@ -6733,6 +7012,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Tough",
 	},
 	"hyperspacehole": {
 		num: 593,
@@ -6750,6 +7030,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"hypervoice": {
 		num: 304,
@@ -6767,6 +7048,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"hypnosis": {
 		num: 95,
@@ -6784,16 +7066,16 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"iceball": {
 		num: 301,
 		accuracy: 90,
 		basePower: 30,
-		basePowerCallback: function (pokemon, target) {
-			let bp = 30;
-			let bpTable = [30, 60, 120, 240, 480];
+		basePowerCallback: function (pokemon, target, move) {
+			var bp = move.basePower;
 			if (pokemon.volatiles.iceball && pokemon.volatiles.iceball.hitCount) {
-				bp = (bpTable[pokemon.volatiles.iceball.hitCount] || 30);
+				bp *= Math.pow(2, pokemon.volatiles.iceball.hitCount);
 			}
 			pokemon.addVolatile('iceball');
 			if (pokemon.volatiles.defensecurl) {
@@ -6832,6 +7114,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ice",
+		contestType: "Beautiful",
 	},
 	"icebeam": {
 		num: 58,
@@ -6852,6 +7135,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Ice",
+		contestType: "Beautiful",
 	},
 	"iceburn": {
 		num: 554,
@@ -6883,6 +7167,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Ice",
+		contestType: "Beautiful",
 	},
 	"icefang": {
 		num: 423,
@@ -6908,6 +7193,7 @@ exports.BattleMovedex = {
 		],
 		target: "normal",
 		type: "Ice",
+		contestType: "Cool",
 	},
 	"icepunch": {
 		num: 8,
@@ -6928,6 +7214,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Ice",
+		contestType: "Beautiful",
 	},
 	"iceshard": {
 		num: 420,
@@ -6945,6 +7232,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ice",
+		contestType: "Beautiful",
 	},
 	"iciclecrash": {
 		num: 556,
@@ -6965,6 +7253,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Ice",
+		contestType: "Beautiful",
 	},
 	"iciclespear": {
 		num: 333,
@@ -6983,6 +7272,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ice",
+		contestType: "Beautiful",
 	},
 	"icywind": {
 		num: 196,
@@ -7004,6 +7294,7 @@ exports.BattleMovedex = {
 		},
 		target: "allAdjacentFoes",
 		type: "Ice",
+		contestType: "Beautiful",
 	},
 	"imprison": {
 		num: 286,
@@ -7024,10 +7315,10 @@ exports.BattleMovedex = {
 				this.add('-start', target, 'move: Imprison');
 			},
 			onFoeDisableMove: function (pokemon) {
-				let foeMoves = this.effectData.source.moveset;
-				for (let f = 0; f < foeMoves.length; f++) {
+				var foeMoves = this.effectData.source.moveset;
+				for (var f = 0; f < foeMoves.length; f++) {
 					if (foeMoves[f].id === 'struggle') continue;
-					pokemon.disableMove(foeMoves[f].id, true);
+					pokemon.disableMove(foeMoves[f].id, 'hidden');
 				}
 				pokemon.maybeDisabled = true;
 			},
@@ -7043,6 +7334,7 @@ exports.BattleMovedex = {
 		pressureTarget: "foeSide",
 		target: "self",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"incinerate": {
 		num: 510,
@@ -7057,7 +7349,7 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {protect: 1, mirror: 1},
 		onHit: function (pokemon, source) {
-			let item = pokemon.getItem();
+			var item = pokemon.getItem();
 			if ((item.isBerry || item.isGem) && pokemon.takeItem(source)) {
 				this.add('-enditem', pokemon, item.name, '[from] move: Incinerate');
 			}
@@ -7065,6 +7357,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Fire",
+		contestType: "Tough",
 	},
 	"inferno": {
 		num: 517,
@@ -7084,6 +7377,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Fire",
+		contestType: "Beautiful",
 	},
 	"infestation": {
 		num: 611,
@@ -7101,6 +7395,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Bug",
+		contestType: "Cute",
 	},
 	"ingrain": {
 		num: 275,
@@ -7126,9 +7421,7 @@ exports.BattleMovedex = {
 			onTrapPokemon: function (pokemon) {
 				pokemon.tryTrap();
 			},
-			onNegateImmunity: function (pokemon, type) {
-				if (type === 'Ground') return false;
-			},
+			// groundedness implemented in battle.engine.js:BattlePokemon#isGrounded
 			onDragOut: function (pokemon) {
 				this.add('-activate', pokemon, 'move: Ingrain');
 				return null;
@@ -7137,6 +7430,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Grass",
+		contestType: "Clever",
 	},
 	"iondeluge": {
 		num: 569,
@@ -7167,6 +7461,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "all",
 		type: "Electric",
+		contestType: "Beautiful",
 	},
 	"irondefense": {
 		num: 334,
@@ -7186,6 +7481,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Steel",
+		contestType: "Tough",
 	},
 	"ironhead": {
 		num: 442,
@@ -7206,6 +7502,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Steel",
+		contestType: "Tough",
 	},
 	"irontail": {
 		num: 231,
@@ -7227,6 +7524,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Steel",
+		contestType: "Cool",
 	},
 	"judgment": {
 		num: 449,
@@ -7247,6 +7545,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Beautiful",
 	},
 	"jumpkick": {
 		num: 26,
@@ -7268,6 +7567,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Cool",
 	},
 	"karatechop": {
 		num: 2,
@@ -7285,6 +7585,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Tough",
 	},
 	"kinesis": {
 		num: 134,
@@ -7304,6 +7605,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"kingsshield": {
 		num: 588,
@@ -7335,7 +7637,7 @@ exports.BattleMovedex = {
 			onTryHit: function (target, source, move) {
 				if (!move.flags['protect'] || move.category === 'Status') return;
 				this.add('-activate', target, 'Protect');
-				let lockedmove = source.getVolatile('lockedmove');
+				var lockedmove = source.getVolatile('lockedmove');
 				if (lockedmove) {
 					// Outrage counter is reset
 					if (source.volatiles['lockedmove'].duration === 2) {
@@ -7351,6 +7653,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Steel",
+		contestType: "Cool",
 	},
 	"knockoff": {
 		num: 282,
@@ -7367,15 +7670,15 @@ exports.BattleMovedex = {
 		flags: {contact: 1, protect: 1, mirror: 1},
 		onBasePowerPriority: 4,
 		onBasePower: function (basePower, pokemon, target) {
-			let item = target.getItem();
-			let noKnockOff = item.onTakeItem && item.onTakeItem(item, target) === false;
+			var item = target.getItem();
+			var noKnockOff = item.onTakeItem && item.onTakeItem(item, target) === false;
 			if (item.id && !noKnockOff) {
 				return this.chainModify(1.5);
 			}
 		},
 		onAfterHit: function (target, source) {
 			if (source.hp) {
-				let item = target.takeItem();
+				var item = target.takeItem();
 				if (item) {
 					this.add('-enditem', target, item.name, '[from] move: Knock Off', '[of] ' + source);
 				}
@@ -7384,6 +7687,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Clever",
 	},
 	"landswrath": {
 		num: 616,
@@ -7400,6 +7704,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Ground",
+		contestType: "Beautiful",
 	},
 	"lastresort": {
 		num: 387,
@@ -7415,8 +7720,8 @@ exports.BattleMovedex = {
 		flags: {contact: 1, protect: 1, mirror: 1},
 		onTryHit: function (target, source) {
 			if (source.moveset.length === 1) return false; // Last Resort fails unless the user knows at least 2 moves
-			let hasLastResort = false; // User must actually have Last Resort for it to succeed
-			for (let i in source.moveset) {
+			var hasLastResort = false; // User must actually have Last Resort for it to succeed
+			for (var i in source.moveset) {
 				if (source.moveset[i].id === 'lastresort') {
 					hasLastResort = true;
 					continue;
@@ -7428,6 +7733,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"lavaplume": {
 		num: 436,
@@ -7448,6 +7754,7 @@ exports.BattleMovedex = {
 		},
 		target: "allAdjacent",
 		type: "Fire",
+		contestType: "Tough",
 	},
 	"leafblade": {
 		num: 348,
@@ -7466,6 +7773,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Cool",
 	},
 	"leafstorm": {
 		num: 437,
@@ -7488,6 +7796,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Beautiful",
 	},
 	"leaftornado": {
 		num: 536,
@@ -7509,6 +7818,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Grass",
+		contestType: "Cool",
 	},
 	"leechlife": {
 		num: 141,
@@ -7526,6 +7836,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Bug",
+		contestType: "Clever",
 	},
 	"leechseed": {
 		num: 73,
@@ -7547,12 +7858,12 @@ exports.BattleMovedex = {
 			},
 			onResidualOrder: 8,
 			onResidual: function (pokemon) {
-				let target = this.effectData.source.side.active[pokemon.volatiles['leechseed'].sourcePosition];
+				var target = this.effectData.source.side.active[pokemon.volatiles['leechseed'].sourcePosition];
 				if (!target || target.fainted || target.hp <= 0) {
 					this.debug('Nothing to leech into');
 					return;
 				}
-				let damage = this.damage(pokemon.maxhp / 8, pokemon, target);
+				var damage = this.damage(pokemon.maxhp / 8, pokemon, target);
 				if (damage) {
 					this.heal(damage, target, pokemon);
 				}
@@ -7567,6 +7878,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Clever",
 	},
 	"leer": {
 		num: 43,
@@ -7586,6 +7898,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"lick": {
 		num: 122,
@@ -7605,6 +7918,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Ghost",
+		contestType: "Cute",
 	},
 	"lightofruin": {
 		num: 617,
@@ -7624,6 +7938,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fairy",
+		contestType: "Beautiful",
 	},
 	"lightscreen": {
 		num: 113,
@@ -7668,6 +7983,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allySide",
 		type: "Psychic",
+		contestType: "Beautiful",
 	},
 	"lockon": {
 		num: 199,
@@ -7698,6 +8014,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"lovelykiss": {
 		num: 142,
@@ -7716,13 +8033,14 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Beautiful",
 	},
 	"lowkick": {
 		num: 67,
 		accuracy: 100,
 		basePower: 0,
 		basePowerCallback: function (pokemon, target) {
-			let targetWeight = target.getWeight();
+			var targetWeight = target.getWeight();
 			if (targetWeight >= 200) {
 				return 120;
 			}
@@ -7752,6 +8070,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Tough",
 	},
 	"lowsweep": {
 		num: 490,
@@ -7773,6 +8092,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Fighting",
+		contestType: "Clever",
 	},
 	"luckychant": {
 		num: 381,
@@ -7802,6 +8122,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allySide",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"lunardance": {
 		num: 461,
@@ -7829,7 +8150,7 @@ exports.BattleMovedex = {
 			onStart: function (side, source) {
 				this.debug('Lunar Dance started on ' + side.name);
 				this.effectData.positions = [];
-				for (let i = 0; i < side.active.length; i++) {
+				for (var i = 0; i < side.active.length; i++) {
 					this.effectData.positions[i] = false;
 				}
 				this.effectData.positions[source.position] = true;
@@ -7845,20 +8166,18 @@ exports.BattleMovedex = {
 				if (!target.fainted) {
 					target.heal(target.maxhp);
 					target.setStatus('');
-					for (let m in target.moveset) {
+					for (var m in target.moveset) {
 						target.moveset[m].pp = target.moveset[m].maxpp;
 					}
 					this.add('-heal', target, target.getHealth, '[from] move: Lunar Dance');
 					this.effectData.positions[target.position] = false;
-				}
-				if (!this.effectData.positions.any(true)) {
-					target.side.removeSideCondition('lunardance');
 				}
 			},
 		},
 		secondary: false,
 		target: "self",
 		type: "Psychic",
+		contestType: "Beautiful",
 	},
 	"lusterpurge": {
 		num: 295,
@@ -7880,6 +8199,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"machpunch": {
 		num: 183,
@@ -7897,6 +8217,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Cool",
 	},
 	"magiccoat": {
 		num: 277,
@@ -7922,7 +8243,7 @@ exports.BattleMovedex = {
 				if (target === source || move.hasBounced || !move.flags['reflectable']) {
 					return;
 				}
-				let newMove = this.getMoveCopy(move.id);
+				var newMove = this.getMoveCopy(move.id);
 				newMove.hasBounced = true;
 				this.useMove(newMove, target, source);
 				return null;
@@ -7931,15 +8252,16 @@ exports.BattleMovedex = {
 				if (target.side === source.side || move.hasBounced || !move.flags['reflectable']) {
 					return;
 				}
-				let newMove = this.getMoveCopy(move.id);
+				var newMove = this.getMoveCopy(move.id);
 				newMove.hasBounced = true;
-				this.useMove(newMove, target, source);
+				this.useMove(newMove, this.effectData.target, source);
 				return null;
 			},
 		},
 		secondary: false,
 		target: "self",
 		type: "Psychic",
+		contestType: "Beautiful",
 	},
 	"magicroom": {
 		num: 478,
@@ -7981,6 +8303,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "all",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"magicalleaf": {
 		num: 345,
@@ -7997,6 +8320,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Beautiful",
 	},
 	"magmastorm": {
 		num: 463,
@@ -8014,6 +8338,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fire",
+		contestType: "Tough",
 	},
 	"magnetbomb": {
 		num: 443,
@@ -8030,6 +8355,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Steel",
+		contestType: "Cool",
 	},
 	"magneticflux": {
 		num: 602,
@@ -8044,18 +8370,19 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {snatch: 1, distance: 1, authentic: 1},
 		onHitSide: function (side, source) {
-			let targets = [];
-			for (let p in side.active) {
+			var targets = [];
+			for (var p in side.active) {
 				if (side.active[p].hasAbility(['plus', 'minus'])) {
 					targets.push(side.active[p]);
 				}
 			}
 			if (!targets.length) return false;
-			for (let i = 0; i < targets.length; i++) this.boost({def: 1, spd: 1}, targets[i], source, 'move: Magnetic Flux');
+			for (var i = 0; i < targets.length; i++) this.boost({def: 1, spd: 1}, targets[i], source, 'move: Magnetic Flux');
 		},
 		secondary: false,
 		target: "allySide",
 		type: "Electric",
+		contestType: "Clever",
 	},
 	"magnetrise": {
 		num: 393,
@@ -8087,6 +8414,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Electric",
+		contestType: "Clever",
 	},
 	"magnitude": {
 		num: 222,
@@ -8101,7 +8429,7 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {protect: 1, mirror: 1, nonsky: 1},
 		onModifyMove: function (move, pokemon) {
-			let i = this.random(100);
+			var i = this.random(100);
 			if (i < 5) {
 				move.magnitude = 4;
 				move.basePower = 10;
@@ -8131,6 +8459,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacent",
 		type: "Ground",
+		contestType: "Tough",
 	},
 	"matblock": {
 		num: 561,
@@ -8162,7 +8491,7 @@ exports.BattleMovedex = {
 				if (!move.flags['protect']) return;
 				if (move && (move.target === 'self' || move.category === 'Status')) return;
 				this.add('-activate', target, 'Mat Block', move.name);
-				let lockedmove = source.getVolatile('lockedmove');
+				var lockedmove = source.getVolatile('lockedmove');
 				if (lockedmove) {
 					// Outrage counter is reset
 					if (source.volatiles['lockedmove'].duration === 2) {
@@ -8175,6 +8504,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allySide",
 		type: "Fighting",
+		contestType: "Cool",
 	},
 	"mefirst": {
 		num: 382,
@@ -8189,12 +8519,12 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {protect: 1, authentic: 1},
 		onTryHit: function (target, pokemon) {
-			let decision = this.willMove(target);
+			var decision = this.willMove(target);
 			if (decision) {
-				let noMeFirst = {
+				var noMeFirst = {
 					chatter:1, counter:1, covet:1, focuspunch:1, mefirst:1, metalburst:1, mirrorcoat:1, struggle:1, thief:1,
 				};
-				let move = this.getMove(decision.move);
+				var move = this.getMoveCopy(decision.move.id);
 				if (move.category !== 'Status' && !noMeFirst[move]) {
 					pokemon.addVolatile('mefirst');
 					this.useMove(move, pokemon, target);
@@ -8213,6 +8543,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "adjacentFoe",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"meanlook": {
 		num: 212,
@@ -8234,6 +8565,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Beautiful",
 	},
 	"meditate": {
 		num: 96,
@@ -8253,6 +8585,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Psychic",
+		contestType: "Beautiful",
 	},
 	"megadrain": {
 		num: 72,
@@ -8270,6 +8603,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Clever",
 	},
 	"megakick": {
 		num: 25,
@@ -8286,6 +8620,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"megapunch": {
 		num: 5,
@@ -8302,6 +8637,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"megahorn": {
 		num: 224,
@@ -8319,6 +8655,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Bug",
+		contestType: "Cool",
 	},
 	"memento": {
 		num: 262,
@@ -8341,6 +8678,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Tough",
 	},
 	"metalburst": {
 		num: 368,
@@ -8388,6 +8726,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "scripted",
 		type: "Steel",
+		contestType: "Cool",
 	},
 	"metalclaw": {
 		num: 232,
@@ -8411,6 +8750,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Steel",
+		contestType: "Cool",
 	},
 	"metalsound": {
 		num: 319,
@@ -8430,6 +8770,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Steel",
+		contestType: "Clever",
 	},
 	"meteormash": {
 		num: 309,
@@ -8454,6 +8795,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Steel",
+		contestType: "Cool",
 	},
 	"metronome": {
 		num: 118,
@@ -8468,21 +8810,21 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {},
 		onHit: function (target) {
-			let moves = [];
-			for (let i in exports.BattleMovedex) {
-				let move = exports.BattleMovedex[i];
+			var moves = [];
+			for (var i in exports.BattleMovedex) {
+				var move = exports.BattleMovedex[i];
 				if (i !== move.id) continue;
 				if (move.isNonstandard) continue;
-				let noMetronome = {
+				var noMetronome = {
 					afteryou:1, assist:1, belch:1, bestow:1, celebrate:1, chatter:1, copycat:1, counter:1, covet:1, craftyshield:1, destinybond:1, detect:1, diamondstorm:1, dragonascent:1, endure:1, feint:1, focuspunch:1, followme:1, freezeshock:1, happyhour:1, helpinghand:1, holdhands:1, hyperspacefury:1, hyperspacehole:1, iceburn:1, kingsshield:1, lightofruin:1, matblock:1, mefirst:1, metronome:1, mimic:1, mirrorcoat:1, mirrormove:1, naturepower:1, originpulse:1, precipiceblades:1, protect:1, quash:1, quickguard:1, ragepowder:1, relicsong:1, secretsword:1, sketch:1, sleeptalk:1, snarl:1, snatch:1, snore:1, spikyshield:1, steameruption:1, struggle:1, switcheroo:1, technoblast:1, thief:1, thousandarrows:1, thousandwaves:1, transform:1, trick:1, vcreate:1, wideguard:1,
 				};
 				if (!noMetronome[move.id]) {
 					moves.push(move);
 				}
 			}
-			let randomMove = '';
+			var randomMove = '';
 			if (moves.length) {
-				moves.sort(function (a, b) {return a.num - b.num;});
+				
 				randomMove = moves[this.random(moves.length)].id;
 			}
 			if (!randomMove) {
@@ -8493,6 +8835,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"milkdrink": {
 		num: 208,
@@ -8511,6 +8854,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"mimic": {
 		num: 102,
@@ -8525,11 +8869,11 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {protect: 1, authentic: 1},
 		onHit: function (target, source) {
-			let disallowedMoves = {chatter:1, mimic:1, sketch:1, struggle:1, transform:1};
+			var disallowedMoves = {chatter:1, mimic:1, sketch:1, struggle:1, transform:1};
 			if (source.transformed || !target.lastMove || disallowedMoves[target.lastMove] || source.moves.indexOf(target.lastMove) >= 0) return false;
-			let moveslot = source.moves.indexOf('mimic');
+			var moveslot = source.moves.indexOf('mimic');
 			if (moveslot < 0) return false;
-			let move = Tools.getMove(target.lastMove);
+			var move = Tools.getMove(target.lastMove);
 			source.moveset[moveslot] = {
 				move: move.name,
 				id: move.id,
@@ -8546,6 +8890,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"mindreader": {
 		num: 170,
@@ -8569,6 +8914,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"minimize": {
 		num: 107,
@@ -8603,6 +8949,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"miracleeye": {
 		num: 357,
@@ -8636,6 +8983,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"mirrorcoat": {
 		num: 243,
@@ -8683,6 +9031,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "scripted",
 		type: "Psychic",
+		contestType: "Beautiful",
 	},
 	"mirrormove": {
 		num: 119,
@@ -8706,6 +9055,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Flying",
+		contestType: "Clever",
 	},
 	"mirrorshot": {
 		num: 429,
@@ -8727,6 +9077,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Steel",
+		contestType: "Beautiful",
 	},
 	"mist": {
 		num: 54,
@@ -8745,8 +9096,8 @@ exports.BattleMovedex = {
 			duration: 5,
 			onBoost: function (boost, target, source, effect) {
 				if (source && target !== source && (!effect.infiltrates || target.side === source.side)) {
-					let showMsg = false;
-					for (let i in boost) {
+					var showMsg = false;
+					for (var i in boost) {
 						if (boost[i] < 0) {
 							delete boost[i];
 							showMsg = true;
@@ -8767,6 +9118,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allySide",
 		type: "Ice",
+		contestType: "Beautiful",
 	},
 	"mistball": {
 		num: 296,
@@ -8788,6 +9140,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"mistyterrain": {
 		num: 581,
@@ -8827,6 +9180,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "all",
 		type: "Fairy",
+		contestType: "Beautiful",
 	},
 	"moonblast": {
 		num: 585,
@@ -8849,6 +9203,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Fairy",
+		contestType: "Beautiful",
 	},
 	"moonlight": {
 		num: 236,
@@ -8875,6 +9230,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Fairy",
+		contestType: "Beautiful",
 	},
 	"morningsun": {
 		num: 234,
@@ -8901,6 +9257,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Beautiful",
 	},
 	"mudslap": {
 		num: 189,
@@ -8922,6 +9279,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Ground",
+		contestType: "Cute",
 	},
 	"mudbomb": {
 		num: 426,
@@ -8943,6 +9301,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Ground",
+		contestType: "Cute",
 	},
 	"mudshot": {
 		num: 341,
@@ -8964,6 +9323,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Ground",
+		contestType: "Tough",
 	},
 	"mudsport": {
 		num: 300,
@@ -9004,6 +9364,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "all",
 		type: "Ground",
+		contestType: "Cute",
 	},
 	"muddywater": {
 		num: 330,
@@ -9025,6 +9386,7 @@ exports.BattleMovedex = {
 		},
 		target: "allAdjacentFoes",
 		type: "Water",
+		contestType: "Tough",
 	},
 	"mysticalfire": {
 		num: 595,
@@ -9046,6 +9408,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Fire",
+		contestType: "Beautiful",
 	},
 	"nastyplot": {
 		num: 417,
@@ -9066,6 +9429,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Dark",
+		contestType: "Clever",
 	},
 	"naturalgift": {
 		num: 363,
@@ -9085,7 +9449,7 @@ exports.BattleMovedex = {
 		flags: {protect: 1, mirror: 1},
 		beforeMoveCallback: function (pokemon) {
 			if (pokemon.ignoringItem()) return;
-			let item = pokemon.getItem();
+			var item = pokemon.getItem();
 			if (item.id && item.naturalGift) {
 				pokemon.addVolatile('naturalgift');
 				pokemon.volatiles['naturalgift'].basePower = item.naturalGift.basePower;
@@ -9109,6 +9473,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"naturepower": {
 		num: 267,
@@ -9123,7 +9488,7 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {},
 		onTryHit: function (target, pokemon) {
-			let move = 'triattack';
+			var move = 'triattack';
 			if (this.isTerrain('electricterrain')) {
 				move = 'thunderbolt';
 			} else if (this.isTerrain('grassyterrain')) {
@@ -9137,6 +9502,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Beautiful",
 	},
 	"needlearm": {
 		num: 302,
@@ -9156,6 +9522,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Grass",
+		contestType: "Clever",
 	},
 	"nightdaze": {
 		num: 539,
@@ -9177,6 +9544,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Dark",
+		contestType: "Cool",
 	},
 	"nightshade": {
 		num: 101,
@@ -9195,6 +9563,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ghost",
+		contestType: "Clever",
 	},
 	"nightslash": {
 		num: 400,
@@ -9213,6 +9582,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Cool",
 	},
 	"nightmare": {
 		num: 171,
@@ -9248,6 +9618,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ghost",
+		contestType: "Clever",
 	},
 	"nobleroar": {
 		num: 568,
@@ -9268,6 +9639,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"nuzzle": {
 		num: 609,
@@ -9288,6 +9660,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Electric",
+		contestType: "Cute",
 	},
 	"oblivionwing": {
 		num: 613,
@@ -9306,6 +9679,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "any",
 		type: "Flying",
+		contestType: "Cool",
 	},
 	"octazooka": {
 		num: 190,
@@ -9327,6 +9701,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Water",
+		contestType: "Tough",
 	},
 	"odorsleuth": {
 		num: 316,
@@ -9347,6 +9722,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"ominouswind": {
 		num: 466,
@@ -9374,6 +9750,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Ghost",
+		contestType: "Beautiful",
 	},
 	"originpulse": {
 		num: 618,
@@ -9390,6 +9767,7 @@ exports.BattleMovedex = {
 		flags: {protect: 1, pulse: 1, mirror: 1},
 		target: "allAdjacentFoes",
 		type: "Water",
+		contestType: "Beautiful",
 	},
 	"outrage": {
 		num: 200,
@@ -9415,6 +9793,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "randomNormal",
 		type: "Dragon",
+		contestType: "Cool",
 	},
 	"overheat": {
 		num: 315,
@@ -9437,6 +9816,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fire",
+		contestType: "Beautiful",
 	},
 	"painsplit": {
 		num: 220,
@@ -9452,7 +9832,7 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {protect: 1, mirror: 1},
 		onHit: function (target, pokemon) {
-			let averagehp = Math.floor((target.hp + pokemon.hp) / 2) || 1;
+			var averagehp = Math.floor((target.hp + pokemon.hp) / 2) || 1;
 			target.sethp(averagehp);
 			pokemon.sethp(averagehp);
 			this.add('-sethp', target, target.getHealth, pokemon, pokemon.getHealth, '[from] move: Pain Split');
@@ -9460,6 +9840,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"paraboliccharge": {
 		num: 570,
@@ -9477,6 +9858,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacent",
 		type: "Electric",
+		contestType: "Clever",
 	},
 	"partingshot": {
 		num: 575,
@@ -9499,6 +9881,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Cool",
 	},
 	"payday": {
 		num: 6,
@@ -9518,22 +9901,19 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"payback": {
 		num: 371,
 		accuracy: 100,
 		basePower: 50,
-		basePowerCallback: function (pokemon, target) {
-			if (target.newlySwitched) {
-				this.debug('Payback NOT boosted on a switch');
-				return 50;
-			}
-			if (this.willMove(target)) {
+		basePowerCallback: function (pokemon, target, move) {
+			if (target.newlySwitched || this.willMove(target)) {
 				this.debug('Payback NOT boosted');
-				return 50;
+				return move.basePower;
 			}
 			this.debug('Payback damage boost');
-			return 100;
+			return move.basePower * 2;
 		},
 		category: "Physical",
 		desc: "Power doubles if the target moves before the user; power is not doubled if the target switches out.",
@@ -9546,6 +9926,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Tough",
 	},
 	"peck": {
 		num: 64,
@@ -9562,6 +9943,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "any",
 		type: "Flying",
+		contestType: "Cool",
 	},
 	"perishsong": {
 		num: 195,
@@ -9577,10 +9959,10 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {sound: 1, distance: 1, authentic: 1},
 		onHitField: function (target, source) {
-			let result = false;
-			let message = false;
-			for (let i = 0; i < this.sides.length; i++) {
-				for (let j = 0; j < this.sides[i].active.length; j++) {
+			var result = false;
+			var message = false;
+			for (var i = 0; i < this.sides.length; i++) {
+				for (var j = 0; j < this.sides[i].active.length; j++) {
 					if (this.sides[i].active[j] && this.sides[i].active[j].isActive) {
 						if (this.sides[i].active[j].hasAbility('soundproof')) {
 							this.add('-immune', this.sides[i].active[j], '[msg]', '[from] ability: Soundproof');
@@ -9604,13 +9986,14 @@ exports.BattleMovedex = {
 				target.faint();
 			},
 			onResidual: function (pokemon) {
-				let duration = pokemon.volatiles['perishsong'].duration;
+				var duration = pokemon.volatiles['perishsong'].duration;
 				this.add('-start', pokemon, 'perish' + duration);
 			},
 		},
 		secondary: false,
 		target: "all",
 		type: "Normal",
+		contestType: "Beautiful",
 	},
 	"petalblizzard": {
 		num: 572,
@@ -9628,6 +10011,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacent",
 		type: "Grass",
+		contestType: "Beautiful",
 	},
 	"petaldance": {
 		num: 80,
@@ -9653,6 +10037,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "randomNormal",
 		type: "Grass",
+		contestType: "Beautiful",
 	},
 	"phantomforce": {
 		num: 566,
@@ -9695,6 +10080,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ghost",
+		contestType: "Cool",
 	},
 	"pinmissile": {
 		num: 42,
@@ -9712,6 +10098,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Bug",
+		contestType: "Cool",
 	},
 	"playnice": {
 		num: 589,
@@ -9731,6 +10118,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"playrough": {
 		num: 583,
@@ -9753,6 +10141,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Fairy",
+		contestType: "Cute",
 	},
 	"pluck": {
 		num: 365,
@@ -9767,16 +10156,18 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {contact: 1, protect: 1, mirror: 1, distance: 1},
 		onHit: function (target, source) {
-			let item = target.getItem();
+			var item = target.getItem();
 			if (source.hp && item.isBerry && target.takeItem(source)) {
 				this.add('-enditem', target, item.name, '[from] stealeat', '[move] Pluck', '[of] ' + source);
 				this.singleEvent('Eat', item, null, source, null, null);
+				this.runEvent('EatItem', source, null, null, item);
 				source.ateBerry = true;
 			}
 		},
 		secondary: false,
 		target: "any",
 		type: "Flying",
+		contestType: "Cute",
 	},
 	"poisonfang": {
 		num: 305,
@@ -9796,6 +10187,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Poison",
+		contestType: "Clever",
 	},
 	"poisongas": {
 		num: 139,
@@ -9813,6 +10205,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Poison",
+		contestType: "Clever",
 	},
 	"poisonjab": {
 		num: 398,
@@ -9833,6 +10226,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Poison",
+		contestType: "Tough",
 	},
 	"poisonpowder": {
 		num: 77,
@@ -9847,7 +10241,7 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {powder: 1, protect: 1, reflectable: 1, mirror: 1},
 		onTryHit: function (target) {
-			if (!target.runImmunity('powder')) {
+			if (!target.runStatusImmunity('powder')) {
 				this.add('-immune', target, '[msg]');
 				return null;
 			}
@@ -9856,6 +10250,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Poison",
+		contestType: "Clever",
 	},
 	"poisonsting": {
 		num: 40,
@@ -9875,6 +10270,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Poison",
+		contestType: "Clever",
 	},
 	"poisontail": {
 		num: 342,
@@ -9895,6 +10291,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Poison",
+		contestType: "Clever",
 	},
 	"pound": {
 		num: 1,
@@ -9911,6 +10308,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"powder": {
 		num: 600,
@@ -9925,7 +10323,7 @@ exports.BattleMovedex = {
 		priority: 1,
 		flags: {powder: 1, protect: 1, reflectable: 1, mirror: 1, authentic: 1},
 		onTryHit: function (target) {
-			if (!target.runImmunity('powder')) {
+			if (!target.runStatusImmunity('powder')) {
 				this.add('-immune', target, '[msg]');
 				return null;
 			}
@@ -9934,7 +10332,7 @@ exports.BattleMovedex = {
 		effect: {
 			duration: 1,
 			onStart: function (target) {
-				this.add('-start', target, 'Powder');
+				this.add('-singleturn', target, 'Powder');
 			},
 			onTryMove: function (pokemon, target, move) {
 				if (move.type === 'Fire') {
@@ -9947,6 +10345,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Bug",
+		contestType: "Clever",
 	},
 	"powdersnow": {
 		num: 181,
@@ -9966,6 +10365,7 @@ exports.BattleMovedex = {
 		},
 		target: "allAdjacentFoes",
 		type: "Ice",
+		contestType: "Beautiful",
 	},
 	"powergem": {
 		num: 408,
@@ -9983,6 +10383,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Rock",
+		contestType: "Beautiful",
 	},
 	"powersplit": {
 		num: 471,
@@ -9997,10 +10398,10 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {protect: 1},
 		onHit: function (target, source) {
-			let newatk = Math.floor((target.stats.atk + source.stats.atk) / 2);
+			var newatk = Math.floor((target.stats.atk + source.stats.atk) / 2);
 			target.stats.atk = newatk;
 			source.stats.atk = newatk;
-			let newspa = Math.floor((target.stats.spa + source.stats.spa) / 2);
+			var newspa = Math.floor((target.stats.spa + source.stats.spa) / 2);
 			target.stats.spa = newspa;
 			source.stats.spa = newspa;
 			this.add('-activate', source, 'Power Split', '[of] ' + target);
@@ -10008,6 +10409,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"powerswap": {
 		num: 384,
@@ -10022,10 +10424,10 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {protect: 1, mirror: 1, authentic: 1},
 		onHit: function (target, source) {
-			let targetBoosts = {};
-			let sourceBoosts = {};
+			var targetBoosts = {};
+			var sourceBoosts = {};
 
-			for (let i in {atk:1, spa:1}) {
+			for (var i in {atk:1, spa:1}) {
 				targetBoosts[i] = target.boosts[i];
 				sourceBoosts[i] = source.boosts[i];
 			}
@@ -10038,6 +10440,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"powertrick": {
 		num: 379,
@@ -10055,22 +10458,21 @@ exports.BattleMovedex = {
 		effect: {
 			onStart: function (pokemon) {
 				this.add('-start', pokemon, 'Power Trick');
-				let newatk = pokemon.stats.def;
-				let newdef = pokemon.stats.atk;
+				var newatk = pokemon.stats.def;
+				var newdef = pokemon.stats.atk;
 				pokemon.stats.atk = newatk;
 				pokemon.stats.def = newdef;
 			},
 			onCopy: function (pokemon) {
-				this.add('-start', pokemon, 'Power Trick');
-				let newatk = pokemon.stats.def;
-				let newdef = pokemon.stats.atk;
+				var newatk = pokemon.stats.def;
+				var newdef = pokemon.stats.atk;
 				pokemon.stats.atk = newatk;
 				pokemon.stats.def = newdef;
 			},
 			onEnd: function (pokemon) {
 				this.add('-end', pokemon, 'Power Trick');
-				let newatk = pokemon.stats.def;
-				let newdef = pokemon.stats.atk;
+				var newatk = pokemon.stats.def;
+				var newdef = pokemon.stats.atk;
 				pokemon.stats.atk = newatk;
 				pokemon.stats.def = newdef;
 			},
@@ -10081,6 +10483,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"poweruppunch": {
 		num: 612,
@@ -10105,6 +10508,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Fighting",
+		contestType: "Tough",
 	},
 	"powerwhip": {
 		num: 438,
@@ -10122,6 +10526,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Tough",
 	},
 	"precipiceblades": {
 		num: 619,
@@ -10138,6 +10543,7 @@ exports.BattleMovedex = {
 		flags: {protect: 1, mirror: 1, nonsky: 1},
 		target: "allAdjacentFoes",
 		type: "Ground",
+		contestType: "Cool",
 	},
 	"present": {
 		num: 217,
@@ -10152,7 +10558,7 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {protect: 1, mirror: 1},
 		onModifyMove: function (move, pokemon, target) {
-			let rand = this.random(10);
+			var rand = this.random(10);
 			if (rand < 2) {
 				move.heal = [1, 4];
 			} else if (rand < 6) {
@@ -10166,6 +10572,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"protect": {
 		num: 182,
@@ -10197,7 +10604,7 @@ exports.BattleMovedex = {
 			onTryHit: function (target, source, move) {
 				if (!move.flags['protect']) return;
 				this.add('-activate', target, 'Protect');
-				let lockedmove = source.getVolatile('lockedmove');
+				var lockedmove = source.getVolatile('lockedmove');
 				if (lockedmove) {
 					// Outrage counter is reset
 					if (source.volatiles['lockedmove'].duration === 2) {
@@ -10210,6 +10617,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"psybeam": {
 		num: 60,
@@ -10229,6 +10637,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Psychic",
+		contestType: "Beautiful",
 	},
 	"psychup": {
 		num: 244,
@@ -10243,8 +10652,8 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {authentic: 1},
 		onHit: function (target, source) {
-			let targetBoosts = {};
-			for (let i in target.boosts) {
+			var targetBoosts = {};
+			for (var i in target.boosts) {
 				targetBoosts[i] = target.boosts[i];
 			}
 			source.setBoost(targetBoosts);
@@ -10253,6 +10662,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"psychic": {
 		num: 94,
@@ -10275,6 +10685,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"psychoboost": {
 		num: 354,
@@ -10297,6 +10708,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"psychocut": {
 		num: 427,
@@ -10315,6 +10727,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Psychic",
+		contestType: "Cool",
 	},
 	"psychoshift": {
 		num: 375,
@@ -10338,6 +10751,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"psyshock": {
 		num: 473,
@@ -10356,6 +10770,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Psychic",
+		contestType: "Beautiful",
 	},
 	"psystrike": {
 		num: 540,
@@ -10374,6 +10789,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Psychic",
+		contestType: "Cool",
 	},
 	"psywave": {
 		num: 149,
@@ -10393,13 +10809,14 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"punishment": {
 		num: 386,
 		accuracy: 100,
 		basePower: 0,
 		basePowerCallback: function (pokemon, target) {
-			let power = 60 + 20 * target.positiveBoosts();
+			var power = 60 + 20 * target.positiveBoosts();
 			if (power > 200) power = 200;
 			return power;
 		},
@@ -10414,18 +10831,19 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Cool",
 	},
 	"pursuit": {
 		num: 228,
 		accuracy: 100,
 		basePower: 40,
-		basePowerCallback: function (pokemon, target) {
+		basePowerCallback: function (pokemon, target, move) {
 			// You can't get here unless the pursuit succeeds
 			if (target.beingCalledBack) {
 				this.debug('Pursuit damage boost');
-				return 80;
+				return move.basePower * 2;
 			}
-			return 40;
+			return move.basePower;
 		},
 		category: "Physical",
 		desc: "If an adjacent foe switches out this turn, this move hits that Pokemon before it leaves the field, even if it was not the original target. If the user moves after a foe using Parting Shot, U-turn, or Volt Switch, but not Baton Pass, it will hit that foe before it leaves the field. Power doubles and no accuracy check is done if the user hits a foe switching out, and the user's turn is over; if a foe faints from this, the replacement Pokemon does not become active until the end of the turn.",
@@ -10453,15 +10871,15 @@ exports.BattleMovedex = {
 			duration: 1,
 			onBeforeSwitchOut: function (pokemon) {
 				this.debug('Pursuit start');
-				let sources = this.effectData.sources;
+				var sources = this.effectData.sources;
 				this.add('-activate', pokemon, 'move: Pursuit');
-				for (let i = 0; i < sources.length; i++) {
+				for (var i = 0; i < sources.length; i++) {
 					if (sources[i].moveThisTurn || sources[i].fainted) continue;
 					this.cancelMove(sources[i]);
 					// Run through each decision in queue to check if the Pursuit user is supposed to Mega Evolve this turn.
 					// If it is, then Mega Evolve before moving.
 					if (sources[i].canMegaEvo) {
-						for (let j = 0; j < this.queue.length; j++) {
+						for (var j = 0; j < this.queue.length; j++) {
 							if (this.queue[j].pokemon === sources[i] && this.queue[j].choice === 'megaEvo') {
 								this.runMegaEvo(sources[i]);
 								break;
@@ -10475,6 +10893,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Clever",
 	},
 	"quash": {
 		num: 511,
@@ -10490,11 +10909,11 @@ exports.BattleMovedex = {
 		flags: {protect: 1, mirror: 1},
 		onHit: function (target) {
 			if (target.side.active.length < 2) return false; // fails in singles
-			let decision = this.willMove(target);
+			var decision = this.willMove(target);
 			if (decision) {
 				decision.priority = -7.1;
 				this.cancelMove(target);
-				for (let i = this.queue.length - 1; i >= 0; i--) {
+				for (var i = this.queue.length - 1; i >= 0; i--) {
 					if (this.queue[i].choice === 'residual') {
 						this.queue.splice(i, 0, decision);
 						break;
@@ -10508,6 +10927,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Clever",
 	},
 	"quickattack": {
 		num: 98,
@@ -10525,6 +10945,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"quickguard": {
 		num: 501,
@@ -10558,7 +10979,7 @@ exports.BattleMovedex = {
 					return;
 				}
 				this.add('-activate', target, 'Quick Guard');
-				let lockedmove = source.getVolatile('lockedmove');
+				var lockedmove = source.getVolatile('lockedmove');
 				if (lockedmove) {
 					// Outrage counter is reset
 					if (source.volatiles['lockedmove'].duration === 2) {
@@ -10571,6 +10992,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allySide",
 		type: "Fighting",
+		contestType: "Cool",
 	},
 	"quiverdance": {
 		num: 483,
@@ -10593,6 +11015,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Bug",
+		contestType: "Beautiful",
 	},
 	"rage": {
 		num: 99,
@@ -10627,6 +11050,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"ragepowder": {
 		num: 476,
@@ -10644,11 +11068,11 @@ exports.BattleMovedex = {
 		effect: {
 			duration: 1,
 			onStart: function (pokemon) {
-				this.add('-start', pokemon, 'move: Rage Powder');
+				this.add('-singleturn', pokemon, 'move: Rage Powder');
 			},
 			onFoeRedirectTargetPriority: 1,
 			onFoeRedirectTarget: function (target, source, source2, move) {
-				if (source.runImmunity('powder') && this.validTarget(this.effectData.target, source, move.target)) {
+				if (source.runStatusImmunity('powder') && this.validTarget(this.effectData.target, source, move.target)) {
 					this.debug("Rage Powder redirected target of move");
 					return this.effectData.target;
 				}
@@ -10657,6 +11081,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Bug",
+		contestType: "Clever",
 	},
 	"raindance": {
 		num: 240,
@@ -10674,6 +11099,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "all",
 		type: "Water",
+		contestType: "Beautiful",
 	},
 	"rapidspin": {
 		num: 229,
@@ -10693,8 +11119,8 @@ exports.BattleMovedex = {
 				if (pokemon.hp && pokemon.removeVolatile('leechseed')) {
 					this.add('-end', pokemon, 'Leech Seed', '[from] move: Rapid Spin', '[of] ' + pokemon);
 				}
-				let sideConditions = {spikes:1, toxicspikes:1, stealthrock:1, stickyweb:1};
-				for (let i in sideConditions) {
+				var sideConditions = {spikes:1, toxicspikes:1, stealthrock:1, stickyweb:1};
+				for (var i in sideConditions) {
 					if (pokemon.hp && pokemon.side.removeSideCondition(i)) {
 						this.add('-sideend', pokemon.side, this.getEffect(i).name, '[from] move: Rapid Spin', '[of] ' + pokemon);
 					}
@@ -10707,6 +11133,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"razorleaf": {
 		num: 75,
@@ -10724,6 +11151,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Grass",
+		contestType: "Cool",
 	},
 	"razorshell": {
 		num: 534,
@@ -10746,6 +11174,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Water",
+		contestType: "Cool",
 	},
 	"razorwind": {
 		num: 13,
@@ -10761,15 +11190,17 @@ exports.BattleMovedex = {
 		flags: {charge: 1, protect: 1, mirror: 1},
 		onTry: function (attacker, defender, move) {
 			if (attacker.volatiles['twoturnmove']) {
-				if (attacker.volatiles['twoturnmove'].duration === 1) {
-					return;
-				} else {
-					return null;
-				}
+				if (attacker.volatiles['twoturnmove'].duration === 2) return null;
+				attacker.removeVolatile(move.id);
+				return;
 			}
 			this.add('-prepare', attacker, move.name, defender);
 			if (!this.runEvent('ChargeMove', attacker, defender, move)) {
 				this.add('-anim', attacker, move.name, defender);
+				if (move.spreadHit) {
+					attacker.addVolatile('twoturnmove', defender);
+					attacker.volatiles['twoturnmove'].duration = 1;
+				}
 				return;
 			}
 			attacker.addVolatile('twoturnmove', defender);
@@ -10779,6 +11210,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"recover": {
 		num: 105,
@@ -10797,6 +11229,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"recycle": {
 		num: 278,
@@ -10818,6 +11251,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"reflect": {
 		num: 115,
@@ -10861,6 +11295,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allySide",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"reflecttype": {
 		num: 513,
@@ -10877,19 +11312,13 @@ exports.BattleMovedex = {
 		onHit: function (target, source) {
 			if (source.template && source.template.num === 493) return false;
 			this.add('-start', source, 'typechange', '[from] move: Reflect Type', '[of] ' + target);
-			source.typesData = [];
-			for (let i = 0, l = target.typesData.length; i < l; i++) {
-				if (target.typesData[i].suppressed) continue;
-				source.typesData.push({
-					type: target.typesData[i].type,
-					suppressed: false,
-					isAdded: target.typesData[i].isAdded,
-				});
-			}
+			source.types = target.getTypes(true);
+			source.addedType = target.addedType;
 		},
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"refresh": {
 		num: 287,
@@ -10909,6 +11338,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"relicsong": {
 		num: 547,
@@ -10945,6 +11375,7 @@ exports.BattleMovedex = {
 		},
 		target: "allAdjacentFoes",
 		type: "Normal",
+		contestType: "Beautiful",
 	},
 	"rest": {
 		num: 156,
@@ -10970,6 +11401,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Psychic",
+		contestType: "Cute",
 	},
 	"retaliate": {
 		num: 514,
@@ -10993,6 +11425,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"return": {
 		num: 216,
@@ -11013,17 +11446,18 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"revenge": {
 		num: 279,
 		accuracy: 100,
 		basePower: 60,
-		basePowerCallback: function (pokemon, target) {
+		basePowerCallback: function (pokemon, target, move) {
 			if (target.lastDamage > 0 && pokemon.lastAttackedBy && pokemon.lastAttackedBy.thisTurn && pokemon.lastAttackedBy.pokemon === target) {
 				this.debug('Boosted for getting hit by ' + pokemon.lastAttackedBy.move);
-				return 120;
+				return move.basePower * 2;
 			}
-			return 60;
+			return move.basePower;
 		},
 		category: "Physical",
 		desc: "Power doubles if the user was hit by the target this turn.",
@@ -11036,13 +11470,14 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Tough",
 	},
 	"reversal": {
 		num: 179,
 		accuracy: 100,
 		basePower: 0,
 		basePowerCallback: function (pokemon, target) {
-			let ratio = pokemon.hp * 48 / pokemon.maxhp;
+			var ratio = pokemon.hp * 48 / pokemon.maxhp;
 			if (ratio < 2) {
 				return 200;
 			}
@@ -11071,6 +11506,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Cool",
 	},
 	"roar": {
 		num: 46,
@@ -11089,6 +11525,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"roaroftime": {
 		num: 459,
@@ -11108,6 +11545,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dragon",
+		contestType: "Beautiful",
 	},
 	"rockblast": {
 		num: 350,
@@ -11126,6 +11564,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Rock",
+		contestType: "Tough",
 	},
 	"rockclimb": {
 		num: 431,
@@ -11145,6 +11584,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"rockpolish": {
 		num: 397,
@@ -11165,6 +11605,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Rock",
+		contestType: "Tough",
 	},
 	"rockslide": {
 		num: 157,
@@ -11185,6 +11626,7 @@ exports.BattleMovedex = {
 		},
 		target: "allAdjacentFoes",
 		type: "Rock",
+		contestType: "Tough",
 	},
 	"rocksmash": {
 		num: 249,
@@ -11206,6 +11648,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Fighting",
+		contestType: "Tough",
 	},
 	"rockthrow": {
 		num: 88,
@@ -11222,6 +11665,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Rock",
+		contestType: "Tough",
 	},
 	"rocktomb": {
 		num: 317,
@@ -11243,6 +11687,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Rock",
+		contestType: "Clever",
 	},
 	"rockwrecker": {
 		num: 439,
@@ -11262,6 +11707,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Rock",
+		contestType: "Tough",
 	},
 	"roleplay": {
 		num: 272,
@@ -11276,13 +11722,13 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {authentic: 1},
 		onTryHit: function (target, source) {
-			let bannedAbilities = {flowergift:1, forecast:1, illusion:1, imposter:1, multitype:1, trace:1, wonderguard:1, zenmode:1};
+			var bannedAbilities = {flowergift:1, forecast:1, illusion:1, imposter:1, multitype:1, trace:1, wonderguard:1, zenmode:1};
 			if (bannedAbilities[target.ability] || source.ability === 'multitype' || target.ability === source.ability) {
 				return false;
 			}
 		},
 		onHit: function (target, source) {
-			let oldAbility = source.setAbility(target.ability);
+			var oldAbility = source.setAbility(target.ability);
 			if (oldAbility) {
 				this.add('-ability', source, this.getAbility(source.ability).name, '[from] move: Role Play', '[of] ' + target);
 				return;
@@ -11292,6 +11738,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Psychic",
+		contestType: "Cute",
 	},
 	"rollingkick": {
 		num: 27,
@@ -11311,16 +11758,16 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Fighting",
+		contestType: "Cool",
 	},
 	"rollout": {
 		num: 205,
 		accuracy: 90,
 		basePower: 30,
-		basePowerCallback: function (pokemon, target) {
-			let bp = 30;
-			let bpTable = [30, 60, 120, 240, 480];
+		basePowerCallback: function (pokemon, target, move) {
+			var bp = move.basePower;
 			if (pokemon.volatiles.rollout && pokemon.volatiles.rollout.hitCount) {
-				bp = (bpTable[pokemon.volatiles.rollout.hitCount] || 30);
+				bp *= Math.pow(2, pokemon.volatiles.rollout.hitCount);
 			}
 			pokemon.addVolatile('rollout');
 			if (pokemon.volatiles.defensecurl) {
@@ -11359,6 +11806,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Rock",
+		contestType: "Cute",
 	},
 	"roost": {
 		num: 355,
@@ -11379,34 +11827,12 @@ exports.BattleMovedex = {
 		},
 		effect: {
 			duration: 1,
-			onStart: function (pokemon) {
-				for (let i = 0, l = pokemon.typesData.length; i < l; i++) {
-					if (pokemon.typesData[i].type === 'Flying') {
-						pokemon.typesData[i].suppressed = true;
-						break;
-					}
-				}
-			},
-			onModifyPokemon: function (pokemon) {
-				for (let i = 0, l = pokemon.typesData.length; i < l; i++) {
-					if (pokemon.typesData[i].type === 'Flying') {
-						pokemon.typesData[i].suppressed = true;
-						break;
-					}
-				}
-			},
-			onEnd: function (pokemon) {
-				for (let i = 0, l = pokemon.typesData.length; i < l; i++) {
-					if (pokemon.typesData[i].type === 'Flying') {
-						pokemon.typesData[i].suppressed = false;
-						break;
-					}
-				}
-			},
+			// implemented in BattlePokemon#getTypes
 		},
 		secondary: false,
 		target: "self",
 		type: "Flying",
+		contestType: "Clever",
 	},
 	"rototiller": {
 		num: 563,
@@ -11421,11 +11847,11 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {distance: 1, nonsky: 1},
 		onHitField: function (target, source) {
-			let targets = [];
-			let anyAirborne = false;
-			for (let sideSlot = 0; sideSlot < this.sides.length; sideSlot++) {
-				let sideActive = this.sides[sideSlot].active;
-				for (let activeSlot = 0; activeSlot < sideActive.length; activeSlot++) {
+			var targets = [];
+			var anyAirborne = false;
+			for (var sideSlot = 0; sideSlot < this.sides.length; sideSlot++) {
+				var sideActive = this.sides[sideSlot].active;
+				for (var activeSlot = 0; activeSlot < sideActive.length; activeSlot++) {
 					if (!sideActive[activeSlot] || !sideActive[activeSlot].isActive) continue;
 					if (!sideActive[activeSlot].runImmunity('Ground')) {
 						this.add('-immune', sideActive[activeSlot], '[msg]');
@@ -11439,11 +11865,12 @@ exports.BattleMovedex = {
 				}
 			}
 			if (!targets.length && !anyAirborne) return false; // Fails when there are no grounded Grass types or airborne Pokemon
-			for (let i = 0; i < targets.length; i++) this.boost({atk: 1, spa: 1}, targets[i], source);
+			for (var i = 0; i < targets.length; i++) this.boost({atk: 1, spa: 1}, targets[i], source);
 		},
 		secondary: false,
 		target: "all",
 		type: "Ground",
+		contestType: "Tough",
 	},
 	"round": {
 		num: 496,
@@ -11451,9 +11878,9 @@ exports.BattleMovedex = {
 		basePower: 60,
 		basePowerCallback: function (target, source, move) {
 			if (move.sourceEffect === 'round') {
-				return 120;
+				return move.basePower * 2;
 			}
-			return 60;
+			return move.basePower;
 		},
 		category: "Special",
 		desc: "If there are other active Pokemon that chose this move for use this turn, those Pokemon take their turn immediately after the user, in Speed order, and this move's power is 120 for each other user.",
@@ -11464,8 +11891,8 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {protect: 1, mirror: 1, sound: 1, authentic: 1},
 		onTryHit: function (target, source) {
-			for (let i = 0; i < this.queue.length; i++) {
-				let decision = this.queue[i];
+			for (var i = 0; i < this.queue.length; i++) {
+				var decision = this.queue[i];
 				if (!decision.pokemon || !decision.move) continue;
 				if (decision.move.id === 'round') {
 					this.prioritizeQueue(decision);
@@ -11476,6 +11903,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Beautiful",
 	},
 	"sacredfire": {
 		num: 221,
@@ -11496,6 +11924,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Fire",
+		contestType: "Beautiful",
 	},
 	"sacredsword": {
 		num: 533,
@@ -11515,6 +11944,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Cool",
 	},
 	"safeguard": {
 		num: 219,
@@ -11567,6 +11997,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allySide",
 		type: "Normal",
+		contestType: "Beautiful",
 	},
 	"sandattack": {
 		num: 28,
@@ -11586,6 +12017,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ground",
+		contestType: "Cute",
 	},
 	"sandtomb": {
 		num: 328,
@@ -11603,6 +12035,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ground",
+		contestType: "Clever",
 	},
 	"sandstorm": {
 		num: 201,
@@ -11620,6 +12053,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "all",
 		type: "Rock",
+		contestType: "Tough",
 	},
 	"scald": {
 		num: 503,
@@ -11641,6 +12075,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Water",
+		contestType: "Tough",
 	},
 	"scaryface": {
 		num: 184,
@@ -11660,6 +12095,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"scratch": {
 		num: 10,
@@ -11676,6 +12112,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"screech": {
 		num: 103,
@@ -11695,6 +12132,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"searingshot": {
 		num: 545,
@@ -11714,6 +12152,7 @@ exports.BattleMovedex = {
 		},
 		target: "allAdjacent",
 		type: "Fire",
+		contestType: "Cool",
 	},
 	"secretpower": {
 		num: 290,
@@ -11727,7 +12166,7 @@ exports.BattleMovedex = {
 		pp: 20,
 		priority: 0,
 		flags: {protect: 1, mirror: 1},
-		onHit: function (target, source, move) {
+		onModifyMove: function (move, pokemon) {
 			if (this.isTerrain('')) return;
 			move.secondaries = [];
 			if (this.isTerrain('electricterrain')) {
@@ -11755,6 +12194,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"secretsword": {
 		num: 548,
@@ -11773,6 +12213,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Beautiful",
 	},
 	"seedbomb": {
 		num: 402,
@@ -11790,6 +12231,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Tough",
 	},
 	"seedflare": {
 		num: 465,
@@ -11812,6 +12254,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Grass",
+		contestType: "Beautiful",
 	},
 	"seismictoss": {
 		num: 69,
@@ -11830,6 +12273,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Tough",
 	},
 	"selfdestruct": {
 		num: 120,
@@ -11847,6 +12291,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacent",
 		type: "Normal",
+		contestType: "Beautiful",
 	},
 	"shadowball": {
 		num: 247,
@@ -11869,6 +12314,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Ghost",
+		contestType: "Clever",
 	},
 	"shadowclaw": {
 		num: 421,
@@ -11887,6 +12333,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ghost",
+		contestType: "Cool",
 	},
 	"shadowforce": {
 		num: 467,
@@ -11930,6 +12377,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ghost",
+		contestType: "Cool",
 	},
 	"shadowpunch": {
 		num: 325,
@@ -11947,6 +12395,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ghost",
+		contestType: "Clever",
 	},
 	"shadowsneak": {
 		num: 425,
@@ -11964,6 +12413,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ghost",
+		contestType: "Clever",
 	},
 	"sharpen": {
 		num: 159,
@@ -11983,6 +12433,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"sheercold": {
 		num: 329,
@@ -12000,6 +12451,7 @@ exports.BattleMovedex = {
 		ohko: true,
 		target: "normal",
 		type: "Ice",
+		contestType: "Beautiful",
 	},
 	"shellsmash": {
 		num: 504,
@@ -12024,6 +12476,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"shiftgear": {
 		num: 508,
@@ -12045,6 +12498,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Steel",
+		contestType: "Clever",
 	},
 	"shockwave": {
 		num: 351,
@@ -12061,6 +12515,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Electric",
+		contestType: "Cool",
 	},
 	"signalbeam": {
 		num: 324,
@@ -12081,6 +12536,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Bug",
+		contestType: "Beautiful",
 	},
 	"silverwind": {
 		num: 318,
@@ -12108,6 +12564,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Bug",
+		contestType: "Beautiful",
 	},
 	"simplebeam": {
 		num: 493,
@@ -12122,13 +12579,13 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {protect: 1, reflectable: 1, mirror: 1},
 		onTryHit: function (pokemon) {
-			let bannedAbilities = {multitype:1, simple:1, stancechange:1, truant:1};
+			var bannedAbilities = {multitype:1, simple:1, stancechange:1, truant:1};
 			if (bannedAbilities[pokemon.ability]) {
 				return false;
 			}
 		},
 		onHit: function (pokemon) {
-			let oldAbility = pokemon.setAbility('simple');
+			var oldAbility = pokemon.setAbility('simple');
 			if (oldAbility) {
 				this.add('-endability', pokemon, oldAbility, '[from] move: Simple Beam');
 				this.add('-ability', pokemon, 'Simple', '[from] move: Simple Beam');
@@ -12139,6 +12596,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"sing": {
 		num: 47,
@@ -12156,6 +12614,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"sketch": {
 		num: 166,
@@ -12171,12 +12630,12 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {authentic: 1},
 		onHit: function (target, source) {
-			let disallowedMoves = {chatter:1, sketch:1, struggle:1};
+			var disallowedMoves = {chatter:1, sketch:1, struggle:1};
 			if (source.transformed || !target.lastMove || disallowedMoves[target.lastMove] || source.moves.indexOf(target.lastMove) >= 0) return false;
-			let moveslot = source.moves.indexOf('sketch');
+			var moveslot = source.moves.indexOf('sketch');
 			if (moveslot < 0) return false;
-			let move = Tools.getMove(target.lastMove);
-			let sketchedMove = {
+			var move = Tools.getMove(target.lastMove);
+			var sketchedMove = {
 				move: move.name,
 				id: move.id,
 				pp: move.pp,
@@ -12193,6 +12652,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"skillswap": {
 		num: 285,
@@ -12207,14 +12667,14 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {protect: 1, mirror: 1, authentic: 1},
 		onTryHit: function (target, source) {
-			let bannedAbilities = {illusion:1, multitype:1, stancechange:1, wonderguard:1};
+			var bannedAbilities = {illusion:1, multitype:1, stancechange:1, wonderguard:1};
 			if (bannedAbilities[target.ability] || bannedAbilities[source.ability]) {
 				return false;
 			}
 		},
 		onHit: function (target, source, move) {
-			let targetAbility = this.getAbility(target.ability);
-			let sourceAbility = this.getAbility(source.ability);
+			var targetAbility = this.getAbility(target.ability);
+			var sourceAbility = this.getAbility(source.ability);
 			this.add('-activate', source, 'move: Skill Swap', targetAbility, sourceAbility, '[of] ' + target);
 			source.battle.singleEvent('End', sourceAbility, source.abilityData, source);
 			target.battle.singleEvent('End', targetAbility, target.abilityData, target);
@@ -12230,6 +12690,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"skullbash": {
 		num: 130,
@@ -12260,6 +12721,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"skyattack": {
 		num: 143,
@@ -12292,6 +12754,7 @@ exports.BattleMovedex = {
 		},
 		target: "any",
 		type: "Flying",
+		contestType: "Cool",
 	},
 	"skydrop": {
 		num: 507,
@@ -12398,6 +12861,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "any",
 		type: "Flying",
+		contestType: "Tough",
 	},
 	"skyuppercut": {
 		num: 327,
@@ -12414,6 +12878,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Cool",
 	},
 	"slackoff": {
 		num: 303,
@@ -12432,6 +12897,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"slam": {
 		num: 21,
@@ -12448,6 +12914,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"slash": {
 		num: 163,
@@ -12465,6 +12932,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"sleeppowder": {
 		num: 79,
@@ -12480,7 +12948,7 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {powder: 1, protect: 1, reflectable: 1, mirror: 1},
 		onTryHit: function (target) {
-			if (!target.runImmunity('powder')) {
+			if (!target.runStatusImmunity('powder')) {
 				this.add('-immune', target, '[msg]');
 				return null;
 			}
@@ -12489,6 +12957,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Clever",
 	},
 	"sleeptalk": {
 		num: 214,
@@ -12508,17 +12977,17 @@ exports.BattleMovedex = {
 			if (pokemon.status !== 'slp') return false;
 		},
 		onHit: function (pokemon) {
-			let moves = [];
-			for (let i = 0; i < pokemon.moveset.length; i++) {
-				let move = pokemon.moveset[i].id;
-				let NoSleepTalk = {
+			var moves = [];
+			for (var i = 0; i < pokemon.moveset.length; i++) {
+				var move = pokemon.moveset[i].id;
+				var NoSleepTalk = {
 					assist:1, belch:1, bide:1, chatter:1, copycat:1, focuspunch:1, mefirst:1, metronome:1, mimic:1, mirrormove:1, naturepower:1, sketch:1, sleeptalk:1, uproar:1,
 				};
 				if (move && !(NoSleepTalk[move] || this.getMove(move).flags['charge'])) {
 					moves.push(move);
 				}
 			}
-			let randomMove = '';
+			var randomMove = '';
 			if (moves.length) randomMove = moves[this.random(moves.length)];
 			if (!randomMove) {
 				return false;
@@ -12528,6 +12997,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"sludge": {
 		num: 124,
@@ -12547,6 +13017,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Poison",
+		contestType: "Tough",
 	},
 	"sludgebomb": {
 		num: 188,
@@ -12567,6 +13038,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Poison",
+		contestType: "Tough",
 	},
 	"sludgewave": {
 		num: 482,
@@ -12587,6 +13059,7 @@ exports.BattleMovedex = {
 		},
 		target: "allAdjacent",
 		type: "Poison",
+		contestType: "Tough",
 	},
 	"smackdown": {
 		num: 479,
@@ -12603,7 +13076,7 @@ exports.BattleMovedex = {
 		volatileStatus: 'smackdown',
 		effect: {
 			onStart: function (pokemon) {
-				let applies = false;
+				var applies = false;
 				if (pokemon.hasType('Flying') || pokemon.hasAbility('levitate')) applies = true;
 				if (pokemon.hasItem('ironball') || pokemon.volatiles['ingrain'] || this.getPseudoWeather('gravity')) applies = false;
 				if (pokemon.removeVolatile('fly') || pokemon.removeVolatile('bounce')) {
@@ -12628,21 +13101,20 @@ exports.BattleMovedex = {
 					this.add('-start', pokemon, 'Smack Down');
 				}
 			},
-			onNegateImmunity: function (pokemon, type) {
-				if (type === 'Ground') return false;
-			},
+			// groundedness implemented in battle.engine.js:BattlePokemon#isGrounded
 		},
 		secondary: false,
 		target: "normal",
 		type: "Rock",
+		contestType: "Tough",
 	},
 	"smellingsalts": {
 		num: 265,
 		accuracy: 100,
 		basePower: 70,
-		basePowerCallback: function (pokemon, target) {
-			if (target.status === 'par') return 140;
-			return 70;
+		basePowerCallback: function (pokemon, target, move) {
+			if (target.status === 'par') return move.basePower * 2;
+			return move.basePower;
 		},
 		category: "Physical",
 		desc: "Power doubles if the target is paralyzed. If the user has not fainted, the target is cured of paralysis.",
@@ -12658,6 +13130,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"smog": {
 		num: 123,
@@ -12677,6 +13150,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Poison",
+		contestType: "Tough",
 	},
 	"smokescreen": {
 		num: 108,
@@ -12696,6 +13170,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"snarl": {
 		num: 555,
@@ -12717,6 +13192,7 @@ exports.BattleMovedex = {
 		},
 		target: "allAdjacentFoes",
 		type: "Dark",
+		contestType: "Tough",
 	},
 	"snatch": {
 		num: 289,
@@ -12738,7 +13214,7 @@ exports.BattleMovedex = {
 			},
 			onAnyTryMove: function (source, target, move) {
 				if (move && move.flags['snatch'] && move.sourceEffect !== 'snatch') {
-					let snatchUser = this.effectData.source;
+					var snatchUser = this.effectData.source;
 					snatchUser.removeVolatile('snatch');
 					this.add('-activate', snatchUser, 'Snatch', '[of] ' + source);
 					this.useMove(move.id, snatchUser);
@@ -12750,6 +13226,7 @@ exports.BattleMovedex = {
 		pressureTarget: "foeSide",
 		target: "self",
 		type: "Dark",
+		contestType: "Clever",
 	},
 	"snore": {
 		num: 173,
@@ -12773,6 +13250,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"spikyshield": {
 		num: 596,
@@ -12804,7 +13282,7 @@ exports.BattleMovedex = {
 			onTryHit: function (target, source, move) {
 				if (!move.flags['protect']) return;
 				this.add('-activate', target, 'Protect');
-				let lockedmove = source.getVolatile('lockedmove');
+				var lockedmove = source.getVolatile('lockedmove');
 				if (lockedmove) {
 					// Outrage counter is reset
 					if (source.volatiles['lockedmove'].duration === 2) {
@@ -12820,6 +13298,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Grass",
+		contestType: "Tough",
 	},
 	"soak": {
 		num: 487,
@@ -12840,6 +13319,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Water",
+		contestType: "Cute",
 	},
 	"softboiled": {
 		num: 135,
@@ -12858,6 +13338,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"solarbeam": {
 		num: 76,
@@ -12893,6 +13374,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Cool",
 	},
 	"sonicboom": {
 		num: 49,
@@ -12910,6 +13392,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"spacialrend": {
 		num: 460,
@@ -12928,6 +13411,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dragon",
+		contestType: "Beautiful",
 	},
 	"spark": {
 		num: 209,
@@ -12947,6 +13431,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Electric",
+		contestType: "Cool",
 	},
 	"spiderweb": {
 		num: 169,
@@ -12968,6 +13453,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Bug",
+		contestType: "Clever",
 	},
 	"spikecannon": {
 		num: 131,
@@ -12985,6 +13471,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"spikes": {
 		num: 191,
@@ -13013,13 +13500,14 @@ exports.BattleMovedex = {
 			},
 			onSwitchIn: function (pokemon) {
 				if (!pokemon.isGrounded()) return;
-				let damageAmounts = [0, 3, 4, 6]; // 1/8, 1/6, 1/4
+				var damageAmounts = [0, 3, 4, 6]; // 1/8, 1/6, 1/4
 				this.damage(damageAmounts[this.effectData.layers] * pokemon.maxhp / 24);
 			},
 		},
 		secondary: false,
 		target: "foeSide",
 		type: "Ground",
+		contestType: "Clever",
 	},
 	"spitup": {
 		num: 255,
@@ -13048,6 +13536,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"spite": {
 		num: 180,
@@ -13071,6 +13560,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ghost",
+		contestType: "Tough",
 	},
 	"splash": {
 		num: 150,
@@ -13091,6 +13581,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"spore": {
 		num: 147,
@@ -13106,7 +13597,7 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {powder: 1, protect: 1, reflectable: 1, mirror: 1},
 		onTryHit: function (target) {
-			if (!target.runImmunity('powder')) {
+			if (!target.runStatusImmunity('powder')) {
 				this.add('-immune', target, '[msg]');
 				return null;
 			}
@@ -13115,6 +13606,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Beautiful",
 	},
 	"stealthrock": {
 		num: 446,
@@ -13136,13 +13628,14 @@ exports.BattleMovedex = {
 				this.add('-sidestart', side, 'move: Stealth Rock');
 			},
 			onSwitchIn: function (pokemon) {
-				let typeMod = this.clampIntRange(pokemon.runEffectiveness('Rock'), -6, 6);
+				var typeMod = this.clampIntRange(pokemon.runEffectiveness('Rock'), -6, 6);
 				this.damage(pokemon.maxhp * Math.pow(2, typeMod) / 8);
 			},
 		},
 		secondary: false,
 		target: "foeSide",
 		type: "Rock",
+		contestType: "Cool",
 	},
 	"steameruption": {
 		num: 592,
@@ -13158,13 +13651,13 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {protect: 1, mirror: 1, defrost: 1},
 		thawsTarget: true,
-		isUnreleased: true,
 		secondary: {
 			chance: 30,
 			status: 'brn',
 		},
 		target: "normal",
 		type: "Water",
+		contestType: "Beautiful",
 	},
 	"steelwing": {
 		num: 211,
@@ -13188,6 +13681,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Steel",
+		contestType: "Cool",
 	},
 	"stickyweb": {
 		num: 564,
@@ -13216,6 +13710,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "foeSide",
 		type: "Bug",
+		contestType: "Tough",
 	},
 	"stockpile": {
 		num: 254,
@@ -13246,7 +13741,7 @@ exports.BattleMovedex = {
 				this.boost({def:1, spd:1}, target, target, this.getMove('stockpile'));
 			},
 			onEnd: function (target) {
-				let layers = this.effectData.layers * -1;
+				var layers = this.effectData.layers * -1;
 				this.effectData.layers = 0;
 				this.boost({def:layers, spd:layers}, target, target, this.getMove('stockpile'));
 				this.add('-end', target, 'Stockpile');
@@ -13255,6 +13750,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"stomp": {
 		num: 23,
@@ -13274,6 +13770,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"stoneedge": {
 		num: 444,
@@ -13292,13 +13789,14 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Rock",
+		contestType: "Tough",
 	},
 	"storedpower": {
 		num: 500,
 		accuracy: 100,
 		basePower: 20,
-		basePowerCallback: function (pokemon) {
-			return 20 + 20 * pokemon.positiveBoosts();
+		basePowerCallback: function (pokemon, target, move) {
+			return move.basePower + 20 * pokemon.positiveBoosts();
 		},
 		category: "Special",
 		desc: "Power is equal to 20+(X*20), where X is the user's total stat stage changes that are greater than 0.",
@@ -13311,6 +13809,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"stormthrow": {
 		num: 480,
@@ -13329,6 +13828,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Cool",
 	},
 	"steamroller": {
 		num: 537,
@@ -13348,6 +13848,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Bug",
+		contestType: "Tough",
 	},
 	"strength": {
 		num: 70,
@@ -13364,6 +13865,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"stringshot": {
 		num: 81,
@@ -13383,6 +13885,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Bug",
+		contestType: "Clever",
 	},
 	"struggle": {
 		num: 165,
@@ -13410,6 +13913,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "randomNormal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"strugglebug": {
 		num: 522,
@@ -13431,6 +13935,7 @@ exports.BattleMovedex = {
 		},
 		target: "allAdjacentFoes",
 		type: "Bug",
+		contestType: "Cute",
 	},
 	"stunspore": {
 		num: 78,
@@ -13445,7 +13950,7 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {powder: 1, protect: 1, reflectable: 1, mirror: 1},
 		onTryHit: function (target) {
-			if (!target.runImmunity('powder')) {
+			if (!target.runStatusImmunity('powder')) {
 				this.add('-immune', target, '[msg]');
 				return null;
 			}
@@ -13454,6 +13959,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Clever",
 	},
 	"submission": {
 		num: 66,
@@ -13471,6 +13977,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Cool",
 	},
 	"substitute": {
 		num: 164,
@@ -13510,7 +14017,7 @@ exports.BattleMovedex = {
 				if (target === source || move.flags['authentic'] || move.infiltrates) {
 					return;
 				}
-				let damage = this.getDamage(source, target, move);
+				var damage = this.getDamage(source, target, move);
 				if (!damage && damage !== 0) {
 					this.add('-fail', target);
 					return null;
@@ -13530,7 +14037,7 @@ exports.BattleMovedex = {
 					this.add('-activate', target, 'Substitute', '[damage]');
 				}
 				if (move.recoil) {
-					this.damage(this.clampIntRange(Math.round(damage * move.recoil[0] / move.recoil[1]), 1), source, target, 'recoil');
+					this.damage(this.calcRecoilDamage(damage, move), source, target, 'recoil');
 				}
 				if (move.drain) {
 					this.heal(Math.ceil(damage * move.drain[0] / move.drain[1]), source, target, 'drain');
@@ -13545,6 +14052,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"suckerpunch": {
 		num: 389,
@@ -13560,8 +14068,9 @@ exports.BattleMovedex = {
 		priority: 1,
 		flags: {contact: 1, protect: 1, mirror: 1},
 		onTry: function (source, target) {
-			let decision = this.willMove(target);
+			var decision = this.willMove(target);
 			if (!decision || decision.choice !== 'move' || (decision.move.category === 'Status' && decision.move.id !== 'mefirst') || target.volatiles.mustrecharge) {
+				this.attrLastMove('[still]');
 				this.add('-fail', source);
 				return null;
 			}
@@ -13569,6 +14078,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Clever",
 	},
 	"sunnyday": {
 		num: 241,
@@ -13586,13 +14096,14 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "all",
 		type: "Fire",
+		contestType: "Beautiful",
 	},
 	"superfang": {
 		num: 162,
 		accuracy: 90,
 		basePower: 0,
 		damageCallback: function (pokemon, target) {
-			return target.hp / 2;
+			return this.clampIntRange(Math.floor(target.hp / 2), 1);
 		},
 		category: "Physical",
 		desc: "Deals damage to the target equal to half of its current HP, rounded down, but not less than 1 HP.",
@@ -13606,6 +14117,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"superpower": {
 		num: 276,
@@ -13629,6 +14141,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Tough",
 	},
 	"supersonic": {
 		num: 48,
@@ -13646,6 +14159,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"surf": {
 		num: 57,
@@ -13663,6 +14177,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacent",
 		type: "Water",
+		contestType: "Beautiful",
 	},
 	"swagger": {
 		num: 207,
@@ -13683,6 +14198,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"swallow": {
 		num: 256,
@@ -13700,13 +14216,14 @@ exports.BattleMovedex = {
 			if (!pokemon.volatiles['stockpile'] || !pokemon.volatiles['stockpile'].layers) return false;
 		},
 		onHit: function (pokemon) {
-			let healAmount = [0.25, 0.5, 1];
+			var healAmount = [0.25, 0.5, 1];
 			this.heal(this.modify(pokemon.maxhp, healAmount[(pokemon.volatiles['stockpile'].layers - 1)]));
 			pokemon.removeVolatile('stockpile');
 		},
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"sweetkiss": {
 		num: 186,
@@ -13724,6 +14241,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fairy",
+		contestType: "Cute",
 	},
 	"sweetscent": {
 		num: 230,
@@ -13743,6 +14261,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"swift": {
 		num: 129,
@@ -13759,6 +14278,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"switcheroo": {
 		num: 415,
@@ -13780,8 +14300,8 @@ exports.BattleMovedex = {
 			}
 		},
 		onHit: function (target, source) {
-			let yourItem = target.takeItem(source);
-			let myItem = source.takeItem();
+			var yourItem = target.takeItem(source);
+			var myItem = source.takeItem();
 			if (target.item || source.item || (!yourItem && !myItem) ||
 					(myItem.onTakeItem && myItem.onTakeItem(myItem, target) === false)) {
 				if (yourItem) target.item = yourItem;
@@ -13801,6 +14321,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Clever",
 	},
 	"swordsdance": {
 		num: 14,
@@ -13821,6 +14342,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Beautiful",
 	},
 	"synchronoise": {
 		num: 485,
@@ -13840,6 +14362,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacent",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"synthesis": {
 		num: 235,
@@ -13866,6 +14389,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Grass",
+		contestType: "Clever",
 	},
 	"tackle": {
 		num: 33,
@@ -13882,6 +14406,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"tailglow": {
 		num: 294,
@@ -13902,6 +14427,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Bug",
+		contestType: "Beautiful",
 	},
 	"tailslap": {
 		num: 541,
@@ -13920,6 +14446,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"tailwhip": {
 		num: 39,
@@ -13939,6 +14466,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"tailwind": {
 		num: 366,
@@ -13977,6 +14505,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allySide",
 		type: "Flying",
+		contestType: "Cool",
 	},
 	"takedown": {
 		num: 36,
@@ -13994,6 +14523,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"taunt": {
 		num: 269,
@@ -14022,8 +14552,8 @@ exports.BattleMovedex = {
 				this.add('-end', target, 'move: Taunt');
 			},
 			onDisableMove: function (pokemon) {
-				let moves = pokemon.moveset;
-				for (let i = 0; i < moves.length; i++) {
+				var moves = pokemon.moveset;
+				for (var i = 0; i < moves.length; i++) {
 					if (this.getMove(moves[i].move).category === 'Status') {
 						pokemon.disableMove(moves[i].id);
 					}
@@ -14040,6 +14570,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Clever",
 	},
 	"technoblast": {
 		num: 546,
@@ -14060,6 +14591,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"teeterdance": {
 		num: 298,
@@ -14077,6 +14609,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacent",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"telekinesis": {
 		num: 477,
@@ -14112,6 +14645,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"teleport": {
 		num: 100,
@@ -14129,6 +14663,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Psychic",
+		contestType: "Cool",
 	},
 	"thief": {
 		num: 168,
@@ -14143,10 +14678,10 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {contact: 1, protect: 1, mirror: 1},
 		onHit: function (target, source) {
-			if (source.item) {
+			if (source.item || source.volatiles['gem']) {
 				return;
 			}
-			let yourItem = target.takeItem(source);
+			var yourItem = target.takeItem(source);
 			if (!yourItem) {
 				return;
 			}
@@ -14159,6 +14694,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Tough",
 	},
 	"thousandarrows": {
 		num: 614,
@@ -14176,17 +14712,19 @@ exports.BattleMovedex = {
 		isUnreleased: true,
 		onEffectiveness: function (typeMod, type, move) {
 			if (move.type !== 'Ground') return;
-			let target = this.activeTarget;
-			// only the attack that grounds the target ignores effectiveness
-			// if called from a chat plugin, don't ignore effectiveness
-			if (!this.runEvent || !this.runEvent('NegateImmunity', target, 'Ground')) return;
-			if (!this.getImmunity('Ground', target)) return 0;
+			var target = this.activeTarget;
+			if (!target) return; // avoid crashing when called from a chat plugin
+			// ignore effectiveness if the target is Flying type and immune to Ground
+			if (!target.runImmunity('Ground')) {
+				if (target.hasType('Flying')) return 0;
+			}
 		},
 		volatileStatus: 'smackdown',
 		ignoreImmunity: {'Ground': true},
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Ground",
+		contestType: "Beautiful",
 	},
 	"thousandwaves": {
 		num: 615,
@@ -14207,6 +14745,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Ground",
+		contestType: "Tough",
 	},
 	"thrash": {
 		num: 37,
@@ -14231,6 +14770,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "randomNormal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"thunder": {
 		num: 87,
@@ -14258,6 +14798,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Electric",
+		contestType: "Cool",
 	},
 	"thunderfang": {
 		num: 422,
@@ -14282,6 +14823,7 @@ exports.BattleMovedex = {
 		],
 		target: "normal",
 		type: "Electric",
+		contestType: "Cool",
 	},
 	"thunderpunch": {
 		num: 9,
@@ -14302,6 +14844,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Electric",
+		contestType: "Cool",
 	},
 	"thundershock": {
 		num: 84,
@@ -14321,6 +14864,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Electric",
+		contestType: "Cool",
 	},
 	"thunderwave": {
 		num: 86,
@@ -14340,6 +14884,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Electric",
+		contestType: "Cool",
 	},
 	"thunderbolt": {
 		num: 85,
@@ -14360,6 +14905,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Electric",
+		contestType: "Cool",
 	},
 	"tickle": {
 		num: 321,
@@ -14380,6 +14926,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"topsyturvy": {
 		num: 576,
@@ -14394,9 +14941,9 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {protect: 1, reflectable: 1, mirror: 1},
 		onHit: function (target) {
-			let targetBoosts = {};
+			var targetBoosts = {};
 
-			for (let i in target.boosts) {
+			for (var i in target.boosts) {
 				target.boosts[i] = -target.boosts[i];
 			}
 
@@ -14407,6 +14954,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Clever",
 	},
 	"torment": {
 		num: 259,
@@ -14435,6 +14983,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Dark",
+		contestType: "Tough",
 	},
 	"toxic": {
 		num: 92,
@@ -14454,6 +15003,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Poison",
+		contestType: "Clever",
 	},
 	"toxicspikes": {
 		num: 390,
@@ -14496,6 +15046,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "foeSide",
 		type: "Poison",
+		contestType: "Clever",
 	},
 	"transform": {
 		num: 144,
@@ -14517,6 +15068,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"triattack": {
 		num: 161,
@@ -14534,7 +15086,7 @@ exports.BattleMovedex = {
 		secondary: {
 			chance: 20,
 			onHit: function (target, source) {
-				let result = this.random(3);
+				var result = this.random(3);
 				if (result === 0) {
 					target.trySetStatus('brn', source);
 				} else if (result === 1) {
@@ -14546,6 +15098,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Normal",
+		contestType: "Beautiful",
 	},
 	"trick": {
 		num: 271,
@@ -14567,8 +15120,8 @@ exports.BattleMovedex = {
 			}
 		},
 		onHit: function (target, source) {
-			let yourItem = target.takeItem(source);
-			let myItem = source.takeItem();
+			var yourItem = target.takeItem(source);
+			var myItem = source.takeItem();
 			if (target.item || source.item || (!yourItem && !myItem) ||
 					(myItem.onTakeItem && myItem.onTakeItem(myItem, target) === false)) {
 				if (yourItem) target.item = yourItem;
@@ -14592,6 +15145,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"trickortreat": {
 		num: 567,
@@ -14613,6 +15167,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Ghost",
+		contestType: "Cute",
 	},
 	"trickroom": {
 		num: 433,
@@ -14653,6 +15208,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "all",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"triplekick": {
 		num: 167,
@@ -14670,7 +15226,8 @@ exports.BattleMovedex = {
 		pp: 10,
 		priority: 0,
 		flags: {contact: 1, protect: 1, mirror: 1},
-		multihit: [3, 3],
+		multihit: 3,
+		multiaccuracy: true,
 		effect: {
 			duration: 1,
 			onStart: function () {
@@ -14686,13 +15243,14 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Cool",
 	},
 	"trumpcard": {
 		num: 376,
 		accuracy: true,
 		basePower: 0,
 		basePowerCallback: function (pokemon) {
-			let move = pokemon.getMoveData(pokemon.lastMove); // Account for calling Trump Card via other moves
+			var move = pokemon.getMoveData(pokemon.lastMove); // Account for calling Trump Card via other moves
 			switch (move.pp) {
 			case 0:
 				return 200;
@@ -14718,6 +15276,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cool",
 	},
 	"twineedle": {
 		num: 41,
@@ -14738,6 +15297,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Bug",
+		contestType: "Cool",
 	},
 	"twister": {
 		num: 239,
@@ -14757,6 +15317,7 @@ exports.BattleMovedex = {
 		},
 		target: "allAdjacentFoes",
 		type: "Dragon",
+		contestType: "Cool",
 	},
 	"uturn": {
 		num: 369,
@@ -14775,6 +15336,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Bug",
+		contestType: "Cute",
 	},
 	"uproar": {
 		num: 253,
@@ -14792,10 +15354,10 @@ exports.BattleMovedex = {
 			volatileStatus: 'uproar',
 		},
 		onTryHit: function (target) {
-			for (let i = 0; i < target.side.active.length; i++) {
-				let allyActive = target.side.active[i];
+			for (var i = 0; i < target.side.active.length; i++) {
+				var allyActive = target.side.active[i];
 				if (allyActive && allyActive.status === 'slp') allyActive.cureStatus();
-				let foeActive = target.side.foe.active[i];
+				var foeActive = target.side.foe.active[i];
 				if (foeActive && foeActive.status === 'slp') foeActive.cureStatus();
 			}
 		},
@@ -14834,6 +15396,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "randomNormal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"vcreate": {
 		num: 557,
@@ -14858,6 +15421,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fire",
+		contestType: "Cool",
 	},
 	"vacuumwave": {
 		num: 410,
@@ -14874,6 +15438,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Cool",
 	},
 	"venomdrench": {
 		num: 599,
@@ -14896,6 +15461,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Poison",
+		contestType: "Clever",
 	},
 	"venoshock": {
 		num: 474,
@@ -14918,6 +15484,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Poison",
+		contestType: "Beautiful",
 	},
 	"vicegrip": {
 		num: 11,
@@ -14934,6 +15501,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"vinewhip": {
 		num: 22,
@@ -14950,6 +15518,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Cool",
 	},
 	"vitalthrow": {
 		num: 233,
@@ -14966,6 +15535,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Cool",
 	},
 	"voltswitch": {
 		num: 521,
@@ -14984,6 +15554,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Electric",
+		contestType: "Cool",
 	},
 	"volttackle": {
 		num: 344,
@@ -15005,14 +15576,15 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Electric",
+		contestType: "Cool",
 	},
 	"wakeupslap": {
 		num: 358,
 		accuracy: 100,
 		basePower: 70,
-		basePowerCallback: function (pokemon, target) {
-			if (target.status === 'slp') return 140;
-			return 70;
+		basePowerCallback: function (pokemon, target, move) {
+			if (target.status === 'slp') return move.basePower * 2;
+			return move.basePower;
 		},
 		category: "Physical",
 		desc: "Power doubles if the target is asleep. If the user has not fainted, the target wakes up.",
@@ -15028,6 +15600,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fighting",
+		contestType: "Tough",
 	},
 	"watergun": {
 		num: 55,
@@ -15044,6 +15617,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Water",
+		contestType: "Cute",
 	},
 	"waterpledge": {
 		num: 518,
@@ -15065,8 +15639,8 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {protect: 1, mirror: 1, nonsky: 1},
 		onPrepareHit: function (target, source, move) {
-			for (let i = 0; i < this.queue.length; i++) {
-				let decision = this.queue[i];
+			for (var i = 0; i < this.queue.length; i++) {
+				var decision = this.queue[i];
 				if (!decision.move || !decision.pokemon || !decision.pokemon.isActive || decision.pokemon.fainted) continue;
 				if (decision.pokemon.side === source.side && decision.move.id in {firepledge:1, grasspledge:1}) {
 					this.prioritizeQueue(decision);
@@ -15104,7 +15678,7 @@ exports.BattleMovedex = {
 			onModifyMove: function (move) {
 				if (move.secondaries && move.id !== 'secretpower') {
 					this.debug('doubling secondary chance');
-					for (let i = 0; i < move.secondaries.length; i++) {
+					for (var i = 0; i < move.secondaries.length; i++) {
 						move.secondaries[i].chance *= 2;
 					}
 				}
@@ -15113,6 +15687,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Water",
+		contestType: "Beautiful",
 	},
 	"waterpulse": {
 		num: 352,
@@ -15132,6 +15707,7 @@ exports.BattleMovedex = {
 		},
 		target: "any",
 		type: "Water",
+		contestType: "Beautiful",
 	},
 	"watersport": {
 		num: 346,
@@ -15172,13 +15748,14 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "all",
 		type: "Water",
+		contestType: "Cute",
 	},
 	"waterspout": {
 		num: 323,
 		accuracy: 100,
 		basePower: 150,
-		basePowerCallback: function (pokemon) {
-			return 150 * pokemon.hp / pokemon.maxhp;
+		basePowerCallback: function (pokemon, target, move) {
+			return move.basePower * pokemon.hp / pokemon.maxhp;
 		},
 		category: "Special",
 		desc: "Power is equal to (user's current HP * 150 / user's maximum HP), rounded down, but not less than 1.",
@@ -15192,6 +15769,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allAdjacentFoes",
 		type: "Water",
+		contestType: "Beautiful",
 	},
 	"waterfall": {
 		num: 127,
@@ -15212,6 +15790,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Water",
+		contestType: "Tough",
 	},
 	"watershuriken": {
 		num: 594,
@@ -15229,14 +15808,15 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Water",
+		contestType: "Cool",
 	},
 	"weatherball": {
 		num: 311,
 		accuracy: 100,
 		basePower: 50,
-		basePowerCallback: function () {
-			if (this.weather) return 100;
-			return 50;
+		basePowerCallback: function (pokemon, target, move) {
+			if (this.weather) return move.basePower * 2;
+			return move.basePower;
 		},
 		category: "Special",
 		desc: "Power doubles during weather effects and this move's type changes to match; Ice type during Hail, Water type during Rain Dance, Rock type during Sandstorm, and Fire type during Sunny Day.",
@@ -15267,6 +15847,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Beautiful",
 	},
 	"whirlpool": {
 		num: 250,
@@ -15284,6 +15865,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Water",
+		contestType: "Beautiful",
 	},
 	"whirlwind": {
 		num: 18,
@@ -15302,6 +15884,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Clever",
 	},
 	"wideguard": {
 		num: 469,
@@ -15334,7 +15917,7 @@ exports.BattleMovedex = {
 					return;
 				}
 				this.add('-activate', target, 'Wide Guard');
-				let lockedmove = source.getVolatile('lockedmove');
+				var lockedmove = source.getVolatile('lockedmove');
 				if (lockedmove) {
 					// Outrage counter is reset
 					if (source.volatiles['lockedmove'].duration === 2) {
@@ -15347,6 +15930,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "allySide",
 		type: "Rock",
+		contestType: "Tough",
 	},
 	"wildcharge": {
 		num: 528,
@@ -15365,6 +15949,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Electric",
+		contestType: "Tough",
 	},
 	"willowisp": {
 		num: 261,
@@ -15383,6 +15968,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Fire",
+		contestType: "Beautiful",
 	},
 	"wingattack": {
 		num: 17,
@@ -15399,6 +15985,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "any",
 		type: "Flying",
+		contestType: "Cool",
 	},
 	"wish": {
 		num: 273,
@@ -15421,10 +16008,10 @@ exports.BattleMovedex = {
 			},
 			onResidualOrder: 4,
 			onEnd: function (side) {
-				let target = side.active[this.effectData.sourcePosition];
+				var target = side.active[this.effectData.sourcePosition];
 				if (target && !target.fainted) {
-					let source = this.effectData.source;
-					let damage = this.heal(this.effectData.hp, target, target);
+					var source = this.effectData.source;
+					var damage = this.heal(this.effectData.hp, target, target);
 					if (damage) this.add('-heal', target, target.getHealth, '[from] move: Wish', '[wisher] ' + source.name);
 				}
 			},
@@ -15432,6 +16019,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"withdraw": {
 		num: 110,
@@ -15451,6 +16039,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Water",
+		contestType: "Cute",
 	},
 	"wonderroom": {
 		num: 472,
@@ -15489,6 +16078,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "all",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"woodhammer": {
 		num: 452,
@@ -15507,6 +16097,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Tough",
 	},
 	"workup": {
 		num: 526,
@@ -15527,6 +16118,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "self",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"worryseed": {
 		num: 388,
@@ -15541,13 +16133,13 @@ exports.BattleMovedex = {
 		priority: 0,
 		flags: {protect: 1, reflectable: 1, mirror: 1},
 		onTryHit: function (pokemon) {
-			let bannedAbilities = {insomnia:1, multitype:1, stancechange:1, truant:1};
+			var bannedAbilities = {insomnia:1, multitype:1, stancechange:1, truant:1};
 			if (bannedAbilities[pokemon.ability]) {
 				return false;
 			}
 		},
 		onHit: function (pokemon) {
-			let oldAbility = pokemon.setAbility('insomnia');
+			var oldAbility = pokemon.setAbility('insomnia');
 			if (oldAbility) {
 				this.add('-endability', pokemon, oldAbility, '[from] move: Worry Seed');
 				this.add('-ability', pokemon, 'Insomnia', '[from] move: Worry Seed');
@@ -15561,6 +16153,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Grass",
+		contestType: "Clever",
 	},
 	"wrap": {
 		num: 35,
@@ -15578,6 +16171,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"wringout": {
 		num: 378,
@@ -15597,6 +16191,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Tough",
 	},
 	"xscissor": {
 		num: 404,
@@ -15614,6 +16209,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Bug",
+		contestType: "Cool",
 	},
 	"yawn": {
 		num: 281,
@@ -15629,7 +16225,7 @@ exports.BattleMovedex = {
 		flags: {protect: 1, reflectable: 1, mirror: 1},
 		volatileStatus: 'yawn',
 		onTryHit: function (target) {
-			if (target.status || !target.runImmunity('slp')) {
+			if (target.status || !target.runStatusImmunity('slp')) {
 				return false;
 			}
 		},
@@ -15647,6 +16243,7 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Normal",
+		contestType: "Cute",
 	},
 	"zapcannon": {
 		num: 192,
@@ -15666,6 +16263,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Electric",
+		contestType: "Cool",
 	},
 	"zenheadbutt": {
 		num: 428,
@@ -15686,6 +16284,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Psychic",
+		contestType: "Clever",
 	},
 	"paleowave": {
 		accuracy: 100,
@@ -15708,6 +16307,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Rock",
+		contestType: "Beautiful",
 	},
 	"shadowstrike": {
 		accuracy: 95,
@@ -15730,6 +16330,7 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Ghost",
+		contestType: "Clever",
 	},
 	"magikarpsrevenge": {
 		accuracy: true,
@@ -15769,5 +16370,6 @@ exports.BattleMovedex = {
 		},
 		target: "normal",
 		type: "Water",
+		contestType: "Cute",
 	},
 };
