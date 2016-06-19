@@ -1,4 +1,4 @@
-'use strict';
+
 
 exports.BattleItems = {
 	"abomasite": {
@@ -104,7 +104,7 @@ exports.BattleItems = {
 				pokemon.eatItem();
 			}
 		},
-		onEatItem: function (item, pokemon) {
+		onTryEatItem: function (item, pokemon) {
 			if (!this.runEvent('TryHeal', pokemon)) return false;
 		},
 		onEat: function (pokemon) {
@@ -259,8 +259,8 @@ exports.BattleItems = {
 			return this.chainModify(1.5);
 		},
 		onDisableMove: function (pokemon) {
-			let moves = pokemon.moveset;
-			for (let i = 0; i < moves.length; i++) {
+			var moves = pokemon.moveset;
+			for (var i = 0; i < moves.length; i++) {
 				if (this.getMove(moves[i].move).category === 'Status') {
 					pokemon.disableMove(moves[i].id);
 				}
@@ -374,7 +374,7 @@ exports.BattleItems = {
 		},
 		onTryHealPriority: 1,
 		onTryHeal: function (damage, target, source, effect) {
-			let heals = {drain: 1, leechseed: 1, ingrain: 1, aquaring: 1};
+			var heals = {drain: 1, leechseed: 1, ingrain: 1, aquaring: 1};
 			if (heals[effect.id]) {
 				return Math.ceil((damage * 1.3) - 0.5); // Big Root rounds half down
 			}
@@ -487,7 +487,7 @@ exports.BattleItems = {
 			}
 		},
 		onPrimal: function (pokemon) {
-			let template = this.getTemplate('Kyogre-Primal');
+			var template = this.getTemplate('Kyogre-Primal');
 			pokemon.formeChange(template);
 			pokemon.baseTemplate = template;
 			pokemon.details = template.species + (pokemon.level === 100 ? '' : ', L' + pokemon.level) + (pokemon.gender === '' ? '' : ', ' + pokemon.gender) + (pokemon.set.shiny ? ', shiny' : '');
@@ -1290,7 +1290,7 @@ exports.BattleItems = {
 				target.eatItem();
 			}
 		},
-		onEatItem: function (item, pokemon) {
+		onTryEatItem: function (item, pokemon) {
 			if (!this.runEvent('TryHeal', pokemon)) return false;
 		},
 		onEat: function (pokemon) {
@@ -1399,7 +1399,7 @@ exports.BattleItems = {
 				pokemon.eatItem();
 			}
 		},
-		onEatItem: function (item, pokemon) {
+		onTryEatItem: function (item, pokemon) {
 			if (!this.runEvent('TryHeal', pokemon)) return false;
 		},
 		onEat: function (pokemon) {
@@ -1935,7 +1935,7 @@ exports.BattleItems = {
 				pokemon.eatItem();
 			}
 		},
-		onEatItem: function (item, pokemon) {
+		onTryEatItem: function (item, pokemon) {
 			if (!this.runEvent('TryHeal', pokemon)) return false;
 		},
 		onEat: function (pokemon) {
@@ -2188,7 +2188,7 @@ exports.BattleItems = {
 		onModifyMove: function (move) {
 			if (move.category !== "Status") {
 				if (!move.secondaries) move.secondaries = [];
-				for (let i = 0; i < move.secondaries.length; i++) {
+				for (var i = 0; i < move.secondaries.length; i++) {
 					if (move.secondaries[i].volatileStatus === 'flinch') return;
 				}
 				move.secondaries.push({
@@ -2308,7 +2308,7 @@ exports.BattleItems = {
 			type: "Fighting",
 		},
 		onUpdate: function (pokemon) {
-			let move = pokemon.getMoveData(pokemon.lastMove);
+			var move = pokemon.getMoveData(pokemon.lastMove);
 			if (move && move.pp === 0) {
 				pokemon.addVolatile('leppaberry');
 				pokemon.volatiles['leppaberry'].move = move;
@@ -2316,13 +2316,13 @@ exports.BattleItems = {
 			}
 		},
 		onEat: function (pokemon) {
-			let move;
+			var move;
 			if (pokemon.volatiles['leppaberry']) {
 				move = pokemon.volatiles['leppaberry'].move;
 				pokemon.removeVolatile('leppaberry');
 			} else {
-				let pp = 99;
-				for (let moveid in pokemon.moveset) {
+				var pp = 99;
+				for (var moveid in pokemon.moveset) {
 					if (pokemon.moveset[moveid].pp < pp) {
 						move = pokemon.moveset[moveid];
 						pp = move.pp;
@@ -2333,10 +2333,10 @@ exports.BattleItems = {
 			if (move.pp > move.maxpp) move.pp = move.maxpp;
 			this.add('-activate', pokemon, 'item: Leppa Berry', move.move);
 			if (pokemon.item !== 'leppaberry') {
-				let foeActive = pokemon.side.foe.active;
-				let foeIsStale = false;
-				for (let i = 0; i < 1; i++) {
-					if (foeActive.isStale >= 2) {
+				var foeActive = pokemon.side.foe.active;
+				var foeIsStale = false;
+				for (var i = 0; i < foeActive.length; i++) {
+					if (foeActive[i].hp && foeActive[i].isStale >= 2) {
 						foeIsStale = true;
 						break;
 					}
@@ -2477,9 +2477,9 @@ exports.BattleItems = {
 		fling: {
 			basePower: 40,
 		},
-		onModifyMove: function (move, user) {
+		onModifyCritRatio: function (critRatio, user) {
 			if (user.baseTemplate.species === 'Chansey') {
-				move.critRatio += 2;
+				return critRatio + 2;
 			}
 		},
 		num: 256,
@@ -2602,7 +2602,7 @@ exports.BattleItems = {
 				pokemon.eatItem();
 			}
 		},
-		onEatItem: function (item, pokemon) {
+		onTryEatItem: function (item, pokemon) {
 			if (!this.runEvent('TryHeal', pokemon)) return false;
 		},
 		onEat: function (pokemon) {
@@ -2740,10 +2740,10 @@ exports.BattleItems = {
 		fling: {
 			basePower: 10,
 			effect: function (pokemon) {
-				let conditions = ['attract', 'taunt', 'encore', 'torment', 'disable', 'healblock'];
-				for (let i = 0; i < conditions.length; i++) {
+				var conditions = ['attract', 'taunt', 'encore', 'torment', 'disable', 'healblock'];
+				for (var i = 0; i < conditions.length; i++) {
 					if (pokemon.volatiles[conditions[i]]) {
-						for (let j = 0; j < conditions.length; j++) {
+						for (var j = 0; j < conditions.length; j++) {
 							pokemon.removeVolatile(conditions[j]);
 							if (conditions[i] === 'attract' && conditions[j] === 'attract') {
 								this.add('-end', pokemon, 'move: Attract', '[from] item: Mental Herb');
@@ -2755,11 +2755,11 @@ exports.BattleItems = {
 			},
 		},
 		onUpdate: function (pokemon) {
-			let conditions = ['attract', 'taunt', 'encore', 'torment', 'disable', 'healblock'];
-			for (let i = 0; i < conditions.length; i++) {
+			var conditions = ['attract', 'taunt', 'encore', 'torment', 'disable', 'healblock'];
+			for (var i = 0; i < conditions.length; i++) {
 				if (pokemon.volatiles[conditions[i]]) {
 					if (!pokemon.useItem()) return;
-					for (let j = 0; j < conditions.length; j++) {
+					for (var j = 0; j < conditions.length; j++) {
 						pokemon.removeVolatile(conditions[j]);
 						if (conditions[i] === 'attract' && conditions[j] === 'attract') {
 							this.add('-end', pokemon, 'move: Attract', '[from] item: Mental Herb');
@@ -2849,8 +2849,8 @@ exports.BattleItems = {
 				this.effectData.lastMove = move.id;
 			},
 			onModifyDamage: function (damage, source, target, move) {
-				let numConsecutive = this.effectData.numConsecutive > 5 ? 5 : this.effectData.numConsecutive;
-				let dmgMod = [0x1000, 0x1333, 0x1666, 0x1999, 0x1CCC, 0x2000];
+				var numConsecutive = this.effectData.numConsecutive > 5 ? 5 : this.effectData.numConsecutive;
+				var dmgMod = [0x1000, 0x1333, 0x1666, 0x1999, 0x1CCC, 0x2000];
 				return this.chainModify([dmgMod[numConsecutive], 0x1000]);
 			},
 		},
@@ -3139,7 +3139,7 @@ exports.BattleItems = {
 				pokemon.eatItem();
 			}
 		},
-		onEatItem: function (item, pokemon) {
+		onTryEatItem: function (item, pokemon) {
 			if (!this.runEvent('TryHeal', pokemon)) return false;
 		},
 		onEat: function (pokemon) {
@@ -3563,8 +3563,8 @@ exports.BattleItems = {
 		fling: {
 			basePower: 80,
 		},
-		onModifyMove: function (move) {
-			move.critRatio++;
+		onModifyCritRatio: function (critRatio) {
+			return critRatio + 1;
 		},
 		num: 326,
 		gen: 4,
@@ -3582,7 +3582,7 @@ exports.BattleItems = {
 		onModifyMove: function (move) {
 			if (move.category !== "Status") {
 				if (!move.secondaries) move.secondaries = [];
-				for (let i = 0; i < move.secondaries.length; i++) {
+				for (var i = 0; i < move.secondaries.length; i++) {
 					if (move.secondaries[i].volatileStatus === 'flinch') return;
 				}
 				move.secondaries.push({
@@ -3639,7 +3639,7 @@ exports.BattleItems = {
 			}
 		},
 		onPrimal: function (pokemon) {
-			let template = this.getTemplate('Groudon-Primal');
+			var template = this.getTemplate('Groudon-Primal');
 			pokemon.formeChange(template);
 			pokemon.baseTemplate = template;
 			pokemon.details = template.species + (pokemon.level === 100 ? '' : ', L' + pokemon.level) + (pokemon.gender === '' ? '' : ', ' + pokemon.gender) + (pokemon.set.shiny ? ', shiny' : '');
@@ -3934,8 +3934,8 @@ exports.BattleItems = {
 		fling: {
 			basePower: 30,
 		},
-		onModifyMove: function (move) {
-			move.critRatio++;
+		onModifyCritRatio: function (critRatio) {
+			return critRatio + 1;
 		},
 		num: 232,
 		gen: 2,
@@ -4107,7 +4107,7 @@ exports.BattleItems = {
 				pokemon.eatItem();
 			}
 		},
-		onEatItem: function (item, pokemon) {
+		onTryEatItem: function (item, pokemon) {
 			if (!this.runEvent('TryHeal', pokemon)) return false;
 		},
 		onEat: function (pokemon) {
@@ -4328,15 +4328,15 @@ exports.BattleItems = {
 			}
 		},
 		onEat: function (pokemon) {
-			let stats = [];
-			for (let stat in pokemon.boosts) {
+			var stats = [];
+			for (var stat in pokemon.boosts) {
 				if (stat !== 'accuracy' && stat !== 'evasion' && pokemon.boosts[stat] < 6) {
 					stats.push(stat);
 				}
 			}
 			if (stats.length) {
-				let randomStat = stats[this.random(stats.length)];
-				let boost = {};
+				var randomStat = stats[this.random(stats.length)];
+				var boost = {};
 				boost[randomStat] = 2;
 				this.boost(boost);
 			}
@@ -4385,9 +4385,9 @@ exports.BattleItems = {
 			basePower: 60,
 		},
 		spritenum: 475,
-		onModifyMove: function (move, user) {
+		onModifyCritRatio: function (critRatio, user) {
 			if (user.baseTemplate.species === 'Farfetch\'d') {
-				move.critRatio += 2;
+				return critRatio + 2;
 			}
 		},
 		num: 259,
@@ -4408,7 +4408,7 @@ exports.BattleItems = {
 		},
 		onHit: function (target, source, move) {
 			if (source && source !== target && !source.item && move && move.flags['contact']) {
-				let barb = target.takeItem();
+				var barb = target.takeItem();
 				source.setItem(barb);
 				// no message for Sticky Barb changing hands
 			}
@@ -4712,9 +4712,9 @@ exports.BattleItems = {
 		fling: {
 			basePower: 10,
 			effect: function (pokemon) {
-				let activate = false;
-				let boosts = {};
-				for (let i in pokemon.boosts) {
+				var activate = false;
+				var boosts = {};
+				for (var i in pokemon.boosts) {
 					if (pokemon.boosts[i] < 0) {
 						activate = true;
 						boosts[i] = 0;
@@ -4726,9 +4726,9 @@ exports.BattleItems = {
 			},
 		},
 		onUpdate: function (pokemon) {
-			let activate = false;
-			let boosts = {};
-			for (let i in pokemon.boosts) {
+			var activate = false;
+			var boosts = {};
+			for (var i in pokemon.boosts) {
 				if (pokemon.boosts[i] < 0) {
 					activate = true;
 					boosts[i] = 0;
@@ -4773,7 +4773,7 @@ exports.BattleItems = {
 				pokemon.eatItem();
 			}
 		},
-		onEatItem: function (item, pokemon) {
+		onTryEatItem: function (item, pokemon) {
 			if (!this.runEvent('TryHeal', pokemon)) return false;
 		},
 		onEat: function (pokemon) {
@@ -4894,7 +4894,7 @@ exports.BattleItems = {
 				pokemon.eatItem();
 			}
 		},
-		onEatItem: function (item, pokemon) {
+		onTryEatItem: function (item, pokemon) {
 			if (!this.runEvent('TryHeal', pokemon)) return false;
 		},
 		onEat: function (pokemon) {
@@ -4979,7 +4979,7 @@ exports.BattleItems = {
 				pokemon.eatItem();
 			}
 		},
-		onEatItem: function (item, pokemon) {
+		onTryEatItem: function (item, pokemon) {
 			if (!this.runEvent('TryHeal', pokemon)) return false;
 		},
 		onEat: function (pokemon) {
@@ -5071,7 +5071,7 @@ exports.BattleItems = {
 			type: "Fighting",
 		},
 		onUpdate: function (pokemon) {
-			let move = pokemon.getMoveData(pokemon.lastMove);
+			var move = pokemon.getMoveData(pokemon.lastMove);
 			if (move && move.pp === 0) {
 				pokemon.addVolatile('leppaberry');
 				pokemon.volatiles['leppaberry'].move = move;
@@ -5079,13 +5079,13 @@ exports.BattleItems = {
 			}
 		},
 		onEat: function (pokemon) {
-			let move;
+			var move;
 			if (pokemon.volatiles['leppaberry']) {
 				move = pokemon.volatiles['leppaberry'].move;
 				pokemon.removeVolatile('leppaberry');
 			} else {
-				let pp = 99;
-				for (let moveid in pokemon.moveset) {
+				var pp = 99;
+				for (var moveid in pokemon.moveset) {
 					if (pokemon.moveset[moveid].pp < pp) {
 						move = pokemon.moveset[moveid];
 						pp = move.pp;
@@ -5096,9 +5096,9 @@ exports.BattleItems = {
 			if (move.pp > move.maxpp) move.pp = move.maxpp;
 			this.add('-activate', pokemon, 'item: Leppa Berry', move.move);
 			if (pokemon.item !== 'leppaberry') {
-				let foeActive = pokemon.side.foe.active;
-				let foeIsStale = false;
-				for (let i = 0; i < 1; i++) {
+				var foeActive = pokemon.side.foe.active;
+				var foeIsStale = false;
+				for (var i = 0; i < 1; i++) {
 					if (foeActive.isStale >= 2) {
 						foeIsStale = true;
 						break;
